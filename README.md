@@ -22,30 +22,35 @@ cd my-nomad-schema
 You should create a virtual environment. You will need the `nomad-lab` package (and `pytest`).
 You need at least Python 3.9.
 
-```
+```sh
 python3 -m venv .pyenv
 source .pyenv/bin/activate
 pip install -r requirements.txt --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
 ```
 
 **Note!**
-Until we have a proper NOMAD release with the plugins functionality. Follow the instructions
-in `requirements.txt` to make it work.
+Until we have an official pypi NOMAD release with the plugins functionality. Make
+sure to include NOMAD's internal package registry (e.g. via `--index-url`). Follow the instructions
+in `requirements.txt`.
 
 ### Run the tests
 
-Make sure the current directory is in your path, e.g. with bash: "`export PYTHONPATH=.`".
+Make sure the current directory is in your path:
+
+```sh
+export PYTHONPATH=.
+```
 
 You can run automated tests with `pytest`:
 
-```
+```sh
 pytest -svx tests
 ```
 
 You can parse an example archive that uses the schema with `nomad`
 (installed via `nomad-lab` Python package):
 
-```
+```sh
 nomad parse tests/data/test.archive.yaml --show-archive
 ```
 
@@ -59,4 +64,4 @@ You can now start to develop you schema. Here are a few things that you might wa
 - When you change module and class names, make sure to update the `nomad_plugin.yaml` accordingly.
 
 To learn more about plugins, how to add them to an Oasis, how to publish them, read our
-documentation on plugins: https://nomad-lab/prod/v1/docs/plugins.html
+documentation on plugins: https://nomad-lab/prod/v1/staging/docs/plugins.html
