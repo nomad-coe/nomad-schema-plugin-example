@@ -64,4 +64,4 @@ You can now start to develop you schema. Here are a few things that you might wa
 - When you change module and class names, make sure to update the `nomad_plugin.yaml` accordingly.
 
 To learn more about plugins, how to add them to an Oasis, how to publish them, read our
-documentation on plugins: https://nomad-lab/prod/v1/staging/docs/plugins.html
+documentation on plugins: https://nomad-lab.eu/prod/v1/staging/docs/plugins.html
