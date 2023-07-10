@@ -63,5 +63,28 @@ You can now start to develop you schema. Here are a few things that you might wa
 - The name of the example section `ExampleSection`. You will also want to define more than one section.
 - When you change module and class names, make sure to update the `nomad_plugin.yaml` accordingly.
 
+
+## Build the python package
+
+The `pyproject.toml` file contains everything that is necessary to turn the project
+into a pip installable python package. Run the python build tool to create a package distribution:
+
+```
+pip install build
+python -m build --sdist
+```
+
+You can install the package with pip:
+
+```
+pip install dist/nomad-schema-plugin-example-1.0.tar.gz
+```
+
+Read more about python packages, `pyproject.toml`, and how to upload packages to PyPI
+on the [PyPI documentation](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+
+
+## Next steps
+
 To learn more about plugins, how to add them to an Oasis, how to publish them, read our
-documentation on plugins: https://nomad-lab/prod/v1/staging/docs/plugins.html
+documentation on plugins: https://nomad-lab.eu/docs/plugins/plugins.html.
