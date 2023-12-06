@@ -6,3 +6,4 @@ nomad-lab>=1.2.0
 # run "python -m build --sdist". Point to the resulting file here, e.g.:
 # ../../../dist/nomad-lab-1.2.0.dev98+g5b6b0745a.d20230330.tar.gz
 pytest
+ruff==0.1.7
