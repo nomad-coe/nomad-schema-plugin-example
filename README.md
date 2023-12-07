@@ -1,3 +1,5 @@
+![](https://coveralls.io/repos/github/nomad-coe/nomad-schema-plugin-example/badge.svg?branch=main)
+
 # NOMAD's schema example plugin
 
 ## Getting started
