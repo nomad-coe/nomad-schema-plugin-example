@@ -50,6 +50,18 @@ You can run automated tests with `pytest`:
 pytest -svx tests
 ```
 
+### Run linting
+
+```sh
+ruff check .
+```
+
+### Run auto-formatting
+
+```sh
+ruff format .
+```
+
 You can parse an example archive that uses the schema with `nomad`
 (installed via `nomad-lab` Python package):
 
@@ -65,7 +77,6 @@ You can now start to develop you schema. Here are a few things that you might wa
 - The name of the Python package `nomadschemaexample`. If you want to define multiple plugins, you can nest packages.
 - The name of the example section `ExampleSection`. You will also want to define more than one section.
 - When you change module and class names, make sure to update the `nomad_plugin.yaml` accordingly.
-
 
 ## Build the python package
 
@@ -85,7 +96,6 @@ pip install dist/nomad-schema-plugin-example-1.0.tar.gz
 
 Read more about python packages, `pyproject.toml`, and how to upload packages to PyPI
 on the [PyPI documentation](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
-
 
 ## Next steps
 
