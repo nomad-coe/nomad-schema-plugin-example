@@ -34,7 +34,8 @@ pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/218
 
 **Note!**
 Until we have an official pypi NOMAD release with the plugins functionality. Make
-sure to include NOMAD's internal package registry (e.g. via `--index-url`). 
+sure to include NOMAD's internal package registry (e.g. via `--index-url`).
+
 ### Run the tests
 
 Make sure the current directory is in your path:
@@ -56,6 +57,8 @@ ruff check .
 ```
 
 ### Run auto-formatting
+
+This is entirely optional. To add this as a check in github actions pipeline, modify the ruff actions in `./github/workflows/actions.yaml`.
 
 ```sh
 ruff format .
