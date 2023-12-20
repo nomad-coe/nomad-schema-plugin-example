@@ -58,7 +58,7 @@ ruff check .
 
 ### Run auto-formatting
 
-This is entirely optional. To add this as a check in github actions pipeline, modify the ruff actions in `./github/workflows/actions.yaml`.
+This is entirely optional. To add this as a check in github actions pipeline, uncomment the `ruff-formatting` step in `./github/workflows/actions.yaml`.
 
 ```sh
 ruff format .

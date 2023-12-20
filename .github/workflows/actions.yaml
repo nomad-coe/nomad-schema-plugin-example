@@ -45,10 +45,17 @@ jobs:
     - name: Test with nomad
       run: |
         python -m nomad.cli parse tests/data/test.archive.yaml
-  ruff:
+  ruff-linting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: chartboost/ruff-action@v1
         with:
-          args: "-- --check ."
+          args: "check ."
+  # ruff-formatting:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: chartboost/ruff-action@v1
+  #       with:
+  #         args: "format ."
