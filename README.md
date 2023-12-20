@@ -28,14 +28,13 @@ You need at least Python 3.9.
 ```sh
 python3 -m venv .pyenv
 source .pyenv/bin/activate
-pip install -r requirements.txt --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+pip install --upgrade pip
+pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
 ```
 
 **Note!**
 Until we have an official pypi NOMAD release with the plugins functionality. Make
-sure to include NOMAD's internal package registry (e.g. via `--index-url`). Follow the instructions
-in `requirements.txt`.
-
+sure to include NOMAD's internal package registry (e.g. via `--index-url`). 
 ### Run the tests
 
 Make sure the current directory is in your path:
