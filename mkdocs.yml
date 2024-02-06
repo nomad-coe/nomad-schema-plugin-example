@@ -2,7 +2,7 @@ site_name: Documentation
 site_description: |
   The documentation for NOMAD schema plugin example
 site_author: The NOMAD Authors
-repo_url: https://github.com/blueraft/nomad-schema-plugin-example
+repo_url: https://github.com/nomad-coe/nomad-schema-plugin-example
 
 nav:
   - Home: index.md
