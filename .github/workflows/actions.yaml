@@ -12,10 +12,17 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install -r requirements.txt --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+        pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+        pip install coverage coveralls
     - name: Test with pytest
       run: |
-        python -m pytest -sv tests
+        python -m coverage run -m pytest -sv
+    - name: Submit to coveralls
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        coveralls --service=github
     - name: Test with nomad
       run: |
         python -m nomad.cli parse tests/data/test.archive.yaml
@@ -38,3 +45,17 @@ jobs:
     - name: Test with nomad
       run: |
         python -m nomad.cli parse tests/data/test.archive.yaml
+  ruff-linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: chartboost/ruff-action@v1
+        with:
+          args: "check ."
+  # ruff-formatting:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: chartboost/ruff-action@v1
+  #       with:
+  #         args: "format ."

@@ -1,18 +1,18 @@
-from nomad.metainfo import Quantity, Package
 from nomad.datamodel.data import EntryData
 from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
+from nomad.metainfo import Package, Quantity
 
 m_package = Package()
 
 
 class ExampleSection(EntryData):
     name = Quantity(
-        type=str,
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity))
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
     message = Quantity(type=str)
 
     def normalize(self, archive, logger):
-        super(ExampleSection, self).normalize(archive, logger)
+        super().normalize(archive, logger)
         logger.info('ExampleSection.normalize called')
 
         self.message = f'Hello {self.name}!'

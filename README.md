@@ -1,3 +1,6 @@
+![](https://github.com/nomad-coe/nomad-schema-plugin-example/actions/workflows/actions.yml/badge.svg)
+![](https://coveralls.io/repos/github/nomad-coe/nomad-schema-plugin-example/badge.svg?branch=main)
+
 # NOMAD's schema example plugin
 
 ## Getting started
@@ -25,13 +28,13 @@ You need at least Python 3.9.
 ```sh
 python3 -m venv .pyenv
 source .pyenv/bin/activate
-pip install -r requirements.txt --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+pip install --upgrade pip
+pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
 ```
 
 **Note!**
 Until we have an official pypi NOMAD release with the plugins functionality. Make
-sure to include NOMAD's internal package registry (e.g. via `--index-url`). Follow the instructions
-in `requirements.txt`.
+sure to include NOMAD's internal package registry (e.g. via `--index-url`).
 
 ### Run the tests
 
@@ -45,6 +48,20 @@ You can run automated tests with `pytest`:
 
 ```sh
 pytest -svx tests
+```
+
+### Run linting
+
+```sh
+ruff check .
+```
+
+### Run auto-formatting
+
+This is entirely optional. To add this as a check in github actions pipeline, uncomment the `ruff-formatting` step in `./github/workflows/actions.yaml`.
+
+```sh
+ruff format .
 ```
 
 You can parse an example archive that uses the schema with `nomad`
@@ -62,7 +79,6 @@ You can now start to develop you schema. Here are a few things that you might wa
 - The name of the Python package `nomadschemaexample`. If you want to define multiple plugins, you can nest packages.
 - The name of the example section `ExampleSection`. You will also want to define more than one section.
 - When you change module and class names, make sure to update the `nomad_plugin.yaml` accordingly.
-
 
 ## Build the python package
 
@@ -82,7 +98,6 @@ pip install dist/nomad-schema-plugin-example-1.0.tar.gz
 
 Read more about python packages, `pyproject.toml`, and how to upload packages to PyPI
 on the [PyPI documentation](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
-
 
 ## Next steps
 
