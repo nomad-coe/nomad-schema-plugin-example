@@ -8,4 +8,4 @@ def test_schema():
     entry_archive = parse(test_file)[0]
     normalize_all(entry_archive)
 
-    assert entry_archive.data.message == 'Hello Markus!'
+    assert entry_archive.data.analysis_type == 'test'

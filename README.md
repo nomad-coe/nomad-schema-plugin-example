@@ -1,24 +1,11 @@
 ![](https://github.com/nomad-coe/nomad-schema-plugin-example/actions/workflows/actions.yml/badge.svg)
 ![](https://coveralls.io/repos/github/nomad-coe/nomad-schema-plugin-example/badge.svg?branch=main)
 
-# NOMAD's schema example plugin
+# NOMAD's Analysis plugin
+This is a plugin for [NOMAD](https://nomad-lab.eu) to facilitate analysis of processed entry archives using Jupyter notebooks.
 
 ## Getting started
 
-### Fork the project
-
-Go to the github project page https://github.com/nomad-coe/nomad-schema-plugin-example, hit
-fork (and leave a star, thanks!). Maybe you want to rename the project while forking!
-
-### Clone your fork
-
-Follow the github instructions. The URL and directory depends on your user name or organization and the
-project name you choose. But, it should look somewhat like this:
-
-```
-git clone git@github.com:markus1978/my-nomad-schema.git
-cd my-nomad-schema
-```
 
 ### Install the dependencies
 
@@ -36,6 +23,7 @@ pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/218
 Until we have an official pypi NOMAD release with the plugins functionality. Make
 sure to include NOMAD's internal package registry (e.g. via `--index-url`).
 
+
 ### Run the tests
 
 Make sure the current directory is in your path:
@@ -48,6 +36,35 @@ You can run automated tests with `pytest`:
 
 ```sh
 pytest -svx tests
+```
+
+## Development
+
+The plugin is still under development. If you would like to contribute, install the package in editable mode with the development dependencies:
+
+```sh
+pip install -e .[dev] --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+```
+
+### Setting up plugin on your local installation
+Read the [NOMAD plugin documentation](https://nomad-lab.eu/prod/v1/staging/docs/howto/oasis/plugins_install.html) for all details on how to deploy the plugin on your NOMAD instance.
+
+You need to modify the ```nomad.yaml``` configuration file of your NOMAD instance.
+To include the analysis plugin you need to add the following lines: .
+
+```yaml
+plugins:
+  include:
+  - 'schemas/nomad_analysis'
+  options:
+    schemas/nomad_analysis:
+      python_package: nomad_analysis
+```
+
+You also need to add the `src` folder to the `PYTHONPATH` of the Python environment of your local NOMAD installation. With this, `nomad_analysis` package can be found by Python. Either run the following every time you start a new terminal for running the appworker, or add it to your virtual environment in `{path to local NOMAD installation}/.pyenv/bin/activate` file: 
+
+```sh
+export PYTHONPATH="$PYTHONPATH:{path to the root of nomad-analysis repo}/src"
 ```
 
 ### Run linting
@@ -64,42 +81,7 @@ This is entirely optional. To add this as a check in github actions pipeline, un
 ruff format .
 ```
 
-You can parse an example archive that uses the schema with `nomad`
-(installed via `nomad-lab` Python package):
-
-```sh
-nomad parse tests/data/test.archive.yaml --show-archive
-```
-
-## Developing your schema
-
-You can now start to develop you schema. Here are a few things that you might want to change:
-
-- The metadata in `nomad_plugin.yaml`.
-- The name of the Python package `nomadschemaexample`. If you want to define multiple plugins, you can nest packages.
-- The name of the example section `ExampleSection`. You will also want to define more than one section.
-- When you change module and class names, make sure to update the `nomad_plugin.yaml` accordingly.
-
-## Build the python package
-
-The `pyproject.toml` file contains everything that is necessary to turn the project
-into a pip installable python package. Run the python build tool to create a package distribution:
-
-```
-pip install build
-python -m build --sdist
-```
-
-You can install the package with pip:
-
-```
-pip install dist/nomad-schema-plugin-example-1.0.tar.gz
-```
-
-Read more about python packages, `pyproject.toml`, and how to upload packages to PyPI
-on the [PyPI documentation](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
-
 ## Next steps
 
 To learn more about plugins, how to add them to an Oasis, how to publish them, read our
-documentation on plugins: https://nomad-lab.eu/docs/plugins/plugins.html.
+documentation: https://nomad-lab.eu/docs/.
