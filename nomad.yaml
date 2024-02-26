@@ -6,7 +6,7 @@ plugins:
   # We only include our schema here. Without the explicit include, all plugins will be
   # loaded. Many build in plugins require more dependencies. Install nomad-lab[parsing]
   # to make all default plugins work.
-  include: 'schemas/example'
+  include: 'schemas/nomad_analysis'
   options:
-    schemas/example:
-      python_package: nomadschemaexample
+    schemas/nomad_analysis:
+      python_package: nomad_analysis

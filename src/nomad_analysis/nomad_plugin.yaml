@@ -1,0 +1,4 @@
+plugin_type: schema
+name: schemas/analysis
+description: Analyses parsed data files |
+  This plugin is used to analyze parsed data files.

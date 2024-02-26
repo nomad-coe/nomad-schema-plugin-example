@@ -26,7 +26,7 @@ You should create a virtual environment. You will need the `nomad-lab` package (
 You need at least Python 3.9.
 
 ```sh
-python3 -m venv .pyenv
+python3.9 -m venv .pyenv
 source .pyenv/bin/activate
 pip install --upgrade pip
 pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple

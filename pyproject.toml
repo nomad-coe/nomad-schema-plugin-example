@@ -3,18 +3,21 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = 'nomad-schema-plugin-example'
+name = 'nomad-analysis'
 version = '1.0'
-description = 'An example schema plugin for NOMAD.'
+description = 'A standard NOMAD plugin for analysis.'
 readme = "README.md"
-authors = [{ name = "The NOMAD Authors" }]
+authors = [
+    { name = "Sarthak Kapoor", email = "sarthak.kapoor@physik.hu-berlin.de" }
+]
 license = { text = "Apache-2.0" }
 dependencies = [
-    "nomad-lab>=1.2.0"
+    "nomad-lab>=1.2.2dev399"
 ]
 
 [project.urls]
-homepage = "https://github.com/nomad-coe/nomad-schema-example-plugin"
+"Homepage" = "https://github.com/FAIRmat-NFDI/nomad-analysis"
+"Bug Tracker" = "https://github.com/FAIRmat-NFDI/nomad-analysis/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -94,7 +97,7 @@ line-ending = "auto"
 
 
 [tool.setuptools.packages.find]
-include = ["nomadschemaexample*"]
+include = ["src"]
 
 [tool.setuptools.package-data]
 nomadschemaexample = ['*/nomad_plugin.yaml']
