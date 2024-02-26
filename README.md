@@ -1,5 +1,5 @@
 ![](https://github.com/nomad-coe/nomad-schema-plugin-example/actions/workflows/actions.yml/badge.svg)
-![](https://coveralls.io/repos/github/nomad-coe/nomad-schema-plugin-example/badge.svg?branch=main)
+<!-- ![](https://coveralls.io/repos/github/nomad-coe/nomad-schema-plugin-example/badge.svg?branch=main) -->
 
 # NOMAD's Analysis plugin
 This is a plugin for [NOMAD](https://nomad-lab.eu) to facilitate analysis of processed entry archives using Jupyter notebooks.
