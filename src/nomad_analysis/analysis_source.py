@@ -44,6 +44,7 @@ def get_input_data(token_header: dict, base_url: str, analysis_entry_id: str) ->
             f'{base_url}/entries/{analysis_entry_id}/archive/query',
             headers={**token_header, 'Accept': 'application/json'},
             json=query,
+            timeout=20,
         )
         if response.status_code == 401:
             print(
@@ -67,6 +68,7 @@ def get_input_data(token_header: dict, base_url: str, analysis_entry_id: str) ->
             f'{base_url}/entries/{entry_id}/archive/query',
             headers={**token_header, 'Accept': 'application/json'},
             json=query,
+            timeout=20,
         ).json()
         if 'data' in response.keys():
             entry_archive_data_list.append(response['data']['archive']['data'])
@@ -83,8 +85,8 @@ def xrd_plot_intensity_two_theta(archive_data: dict, peak_indices=None) -> None:
         archive_data (dict): Archive data of the entry.
         peak_indices (np.array): Indices of peaks found in the intensity data.
     """
-    import plotly.express as px
     import numpy as np
+    import plotly.express as px
 
     intensity = np.array(archive_data['results'][0]['intensity'])
     two_theta = np.array(archive_data['results'][0]['two_theta'])
@@ -120,8 +122,8 @@ def xrd_plot_logy_intensity_two_theta(archive_data: dict, peak_indices=None) -> 
         archive_data (dict): Archive data of the entry.
         peak_indices (np.array): Indices of peaks found in the intensity data.
     """
-    import plotly.express as px
     import numpy as np
+    import plotly.express as px
 
     intensity = np.array(archive_data['results'][0]['intensity'])
     two_theta = np.array(archive_data['results'][0]['two_theta'])
@@ -216,8 +218,6 @@ def xrd_conduct_analysis(
         archive_data (dict): Archive data of the entry.
         plot (bool): If True, plots the intensity vs 2θ plot.
     """
-    import collections
-
     if options is None:
         options = {
             'height': 20,
@@ -243,9 +243,10 @@ def xrd_voila_analysis(input_data) -> None:
     ## Voila specific code
 
     import collections
+
     import ipywidgets as widgets
-    from IPython.display import display, clear_output, HTML
     import pandas as pd
+    from IPython.display import clear_output, display
 
     def get_input_entry_names(input_data: list) -> list:
         """
@@ -284,7 +285,7 @@ def xrd_voila_analysis(input_data) -> None:
             value=1,
             readout_format='.1f',
             tooltip='Required minimal horizontal distance (>= 1) in samples'
-            'between neighbouring peaks.',
+            'between neighboring peaks.',
         ),
     ]
     find_peak_button = widgets.Button(

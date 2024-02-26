@@ -32,33 +32,34 @@ Upcoming features:
 - Link the output section of the analysis schema to a sub-section of the input.
 - Write the analysis results back to the output section.
 """
-from typing import TYPE_CHECKING
-import nbformat as nbf
-import os
 import json
+import os
+from typing import TYPE_CHECKING
+
+import nbformat as nbf
+from nomad.datamodel.data import (
+    EntryData,
+    EntryDataCategory,
+)
+from nomad.datamodel.metainfo.annotations import (
+    BrowserAnnotation,
+    ELNAnnotation,
+    ELNComponentEnum,
+)
 from nomad.datamodel.metainfo.basesections import (
     Analysis,
     AnalysisResult,
     SectionReference,
 )
 from nomad.metainfo import (
-    Package,
-    Section,
-    Quantity,
-    SubSection,
     Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
 )
-from nomad.datamodel.data import (
-    ArchiveSection,
-    EntryData,
-    EntryDataCategory,
-)
-from nomad.datamodel.metainfo.annotations import (
-    ELNAnnotation,
-    ELNComponentEnum,
-    BrowserAnnotation,
-)
-from analysis.utils import get_function_source, list_to_string
+
+from nomad_analysis.utils import get_function_source, list_to_string
 
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (

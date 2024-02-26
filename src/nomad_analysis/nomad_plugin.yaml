@@ -1,4 +1,4 @@
 plugin_type: schema
-name: schemas/analysis
+name: schemas/nomad_analysis
 description: Analyses parsed data files |
   This plugin is used to analyze parsed data files.

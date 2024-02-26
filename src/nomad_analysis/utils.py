@@ -31,8 +31,8 @@ def get_function_source(
     Args:
         category (str): Category of the functions.
         func (callable): Singular function whose source code is to be returned.
-        module (str): Module which will be searched. 
-            Default is `analysis.analysis_source`.
+        module (str): Module which will be searched.
+            Default is `nomad_analysis.analysis_source`.
 
     Returns:
         list: List of source code of the functions.
@@ -42,7 +42,7 @@ def get_function_source(
         func_sources.append(inspect.getsource(func))
     if category_name is not None and func is None:
         if module is None:
-            module = importlib.import_module('analysis.analysis_source')
+            module = importlib.import_module('nomad_analysis.analysis_source')
         for _, obj in inspect.getmembers(module):
             if (
                 inspect.isfunction(obj)
