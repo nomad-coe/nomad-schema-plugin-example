@@ -5,7 +5,8 @@
     category should be correspond to `analysis_type` in the schema.
 
     At present, the experiment specific categories includes `XRD`.
-    For e.g., when adding an analysis function for XRD, use `@category('XRD')` decorator.
+    For e.g., when adding an analysis function for XRD, use `@category('XRD')` 
+    decorator.
 
     Use `@category('Generic')` for functions which should always be included.
 
@@ -29,6 +30,8 @@ def get_input_data(token_header: dict, base_url: str, analysis_entry_id: str) ->
     Returns:
         list: List of data from all the referenced entries.
     """
+    from http import HTTPStatus
+
     import requests
 
     def entry_id_from_reference(reference: str):
@@ -46,7 +49,7 @@ def get_input_data(token_header: dict, base_url: str, analysis_entry_id: str) ->
             json=query,
             timeout=20,
         )
-        if response.status_code == 401:
+        if response.status_code == HTTPStatus.UNAUTHORIZED:
             print(
                 'Authentication failed as the token expired.'
                 'Please re-launch JupyterHub or Voila.'
@@ -158,7 +161,8 @@ def xrd_find_peaks(archive_data: dict, options: dict = None) -> dict:
 
     Args:
         archive_data (dict): Archive data of the entry.
-        options (dict): Options for the peak finding algorithm `scipy.signal.find_peaks`.
+        options (dict): Options for the peak finding algorithm
+            `scipy.signal.find_peaks`.
 
     Returns:
         dict: Peaks found in the intensity vs 2θ plot.
@@ -235,7 +239,7 @@ def xrd_conduct_analysis(
 
 
 @category('XRD')
-def xrd_voila_analysis(input_data) -> None:
+def xrd_voila_analysis(input_data) -> None:  # noqa: PLR0915
     """
     Use ipywidgets to create an interactive XRD analysis. These widgets can be rendered
     using Voila.

@@ -10,7 +10,7 @@ This is a plugin for [NOMAD](https://nomad-lab.eu) to facilitate analysis of pro
 ### Install the dependencies
 
 You should create a virtual environment. You will need the `nomad-lab` package (and `pytest`).
-You need at least Python 3.9.
+You need Python 3.9.
 
 ```sh
 python3.9 -m venv .pyenv
@@ -26,10 +26,10 @@ sure to include NOMAD's internal package registry (e.g. via `--index-url`).
 
 ### Run the tests
 
-Make sure the current directory is in your path:
+Make sure the `src` directory is in your path:
 
 ```sh
-export PYTHONPATH=.
+export PYTHONPATH=./src
 ```
 
 You can run automated tests with `pytest`:
