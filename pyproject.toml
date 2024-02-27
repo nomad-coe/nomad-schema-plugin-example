@@ -5,30 +5,35 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = 'nomad-analysis'
-version = '1.0'
-description = 'A standard NOMAD plugin for analysis.'
+name = "nomad-analysis"
+version = '0.1.0'
+description = "A standard NOMAD plugin for analysis."
 readme = "README.md"
 authors = [
     { name = "Sarthak Kapoor", email = "sarthak.kapoor@physik.hu-berlin.de" }
 ]
 license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: Apache Software License",
+]
 dependencies = [
     "nomad-lab>=1.2.2dev399",
     "nbformat>=5.9.2",
-    "importlib-metadata~=4.13.0",
+]
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.2.0",
+    "pytest",
+    "structlog==22.3.0"
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/FAIRmat-NFDI/nomad-analysis"
 "Bug Tracker" = "https://github.com/FAIRmat-NFDI/nomad-analysis/issues"
-
-[project.optional-dependencies]
-dev = [
-    'ruff>=0.2.0',
-    'pytest',
-    'structlog==22.3.0'
-]
     
 [tool.ruff]   
 # Exclude a variety of commonly ignored directories.
@@ -102,7 +107,7 @@ line-ending = "auto"
 
 
 [tool.setuptools.packages.find]
-include = ["src"]
+where = ["src"]
 
 [tool.setuptools.package-data]
-nomadschemaexample = ['*/nomad_plugin.yaml']
+nomad_analysis = ['*/nomad_plugin.yaml']
