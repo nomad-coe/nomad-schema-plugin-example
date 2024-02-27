@@ -1,5 +1,7 @@
 [build-system]
-requires = ["setuptools"]
+requires = [
+    "setuptools>=61.0.0",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -12,7 +14,9 @@ authors = [
 ]
 license = { text = "Apache-2.0" }
 dependencies = [
-    "nomad-lab>=1.2.2dev399"
+    "nomad-lab>=1.2.2dev399",
+    "nbformat>=5.9.2",
+    "importlib-metadata~=4.13.0",
 ]
 
 [project.urls]
@@ -22,7 +26,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     'ruff>=0.2.0',
-    'pytest'
+    'pytest',
+    'structlog==22.3.0'
 ]
     
 [tool.ruff]   
