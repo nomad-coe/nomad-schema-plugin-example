@@ -26,12 +26,6 @@ sure to include NOMAD's internal package registry (e.g. via `--index-url`).
 
 ### Run the tests
 
-Make sure the `src` directory is in your path:
-
-```sh
-export PYTHONPATH=./src
-```
-
 You can run automated tests with `pytest`:
 
 ```sh
@@ -61,25 +55,21 @@ plugins:
       python_package: nomad_analysis
 ```
 
-You also need to add the `src` folder to the `PYTHONPATH` of the Python environment of your local NOMAD installation. With this, `nomad_analysis` package can be found by Python. Either run the following every time you start a new terminal for running the appworker, or add it to your virtual environment in `{path to local NOMAD installation}/.pyenv/bin/activate` file: 
+You also need to add the `src` folder to the `PYTHONPATH` of the Python environment of your local NOMAD installation. With this, `nomad_analysis` package can be found by Python virtual environment of NOMAD. Either run the following every time you start a new terminal for running the appworker, or add it to your virtual environment in `{path to local NOMAD installation}/.pyenv/bin/activate` file: 
 
 ```sh
 export PYTHONPATH="$PYTHONPATH:{path to the root of nomad-analysis repo}/src"
 ```
 
-### Run linting
+### Run linting and auto-formatting
 
 ```sh
 ruff check .
 ```
-
-### Run auto-formatting
-
-This is entirely optional. To add this as a check in github actions pipeline, uncomment the `ruff-formatting` step in `./github/workflows/actions.yaml`.
-
 ```sh
 ruff format .
 ```
+Ruff auto-formatting is also a part of the GitHub workflow actions. Make sure that before you make a Pull Request, `ruff format .` runs in your local without any errors otherwise the workflow action will fail. 
 
 ## Next steps
 
