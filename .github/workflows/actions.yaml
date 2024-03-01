@@ -52,6 +52,7 @@ jobs:
       - uses: chartboost/ruff-action@v1
         with:
           args: "check ."
+          version: 0.1.8
   # to enable auto-formatting check, uncomment the following lines below           
   # ruff-formatting:
   #   runs-on: ubuntu-latest
@@ -60,3 +61,4 @@ jobs:
   #     - uses: chartboost/ruff-action@v1
   #       with:
   #         args: "format . --check"
+  #         version: 0.1.8
