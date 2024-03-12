@@ -11,7 +11,7 @@ dynamic = ["version"]
 description = "A NOMAD reader for ML-generated SMILES molecules."
 readme = "README.md"
 authors = [
-    { name = "Terence Musho", email = "-" },
+    { name = "Terence Musho" },
     { name = "Jose M. Pizarro", email = "jose.pizarro@physik.hu-berlin.de" },
 ]
 license = { text = "Apache-2.0" }
