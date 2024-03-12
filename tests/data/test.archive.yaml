@@ -1,3 +1,2 @@
 data:
   m_def: nomad_analysis.ELNJupyterAnalysis
-  analysis_type: test

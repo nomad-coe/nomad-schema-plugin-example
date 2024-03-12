@@ -32,6 +32,7 @@ Upcoming features:
 - Link the output section of the analysis schema to a sub-section of the input.
 - Write the analysis results back to the output section.
 """
+
 import json
 import os
 from typing import TYPE_CHECKING
@@ -150,6 +151,7 @@ class ELNJupyterAnalysis(JupyterAnalysis):
     )
     analysis_type = Quantity(
         type=str,
+        default='Generic',
         description=(
             'Based on the analysis type, code cells will be added to the Jupyter '
             'notebook. Code cells from **Generic** are always included.'
@@ -201,13 +203,19 @@ class ELNJupyterAnalysis(JupyterAnalysis):
             archive (EntryArchive): The archive containing the section.
             logger (BoundLogger): A structlog logger.
         """
-        file_name = (
-            self.name.replace(' ', '_')
-            + f'_{self.analysis_type.lower()}_notebook.ipynb'
-        )
-        if not archive.m_context.raw_path_exists(self.notebook):
+        if self.name:
+            file_name = (
+                self.name.replace(' ', '_') + '_' +
+                self.analysis_type.lower() + '_notebook.ipynb'
+            )
+        else:
+            file_name = 'untitled.ipynb'
+
+        if self.notebook is None:
             self.notebook = file_name
-        elif not self.notebook == file_name:
+            return
+
+        if self.notebook != file_name:
             raw_path = archive.m_context.raw_path()
             os.rename(
                 os.path.join(raw_path, self.notebook),
@@ -390,7 +398,6 @@ class ELNGenericJupyterAnalysis(ELNJupyterAnalysis, EntryData):
     )
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger'):
-        self.analysis_type = 'Generic'
         super().normalize(archive, logger)
 
 
