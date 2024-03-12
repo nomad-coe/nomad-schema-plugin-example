@@ -3,11 +3,7 @@ normalize:
     include:
       - MetainfoNormalizer
 plugins:
-  # We only include our schema here. Without the explicit include, all plugins will be
-  # loaded. Many build in plugins require more dependencies. Install nomad-lab[parsing]
-  # to make all default plugins work.
-  include:
-    - 'schemas/example'
+  include: 'schemas/nomad_ML_smiles_reader'
   options:
-    schemas/example:
-      python_package: nomadschemaexample
+    schemas/nomad_ML_smiles_reader:
+      python_package: nomad_ML_smiles_reader

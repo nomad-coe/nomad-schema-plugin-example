@@ -1,0 +1,4 @@
+plugin_type: schema
+name: schemas/nomad_ML_smiles_reader
+description: |
+  This plugin is used to read a ML-generated SMILES molecules calculation and generate a NOMAD archive.

@@ -1,52 +1,61 @@
 [build-system]
-requires = ["setuptools"]
+requires = [
+    "setuptools>=61.0.0",
+    "setuptools-scm>=8.0",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = 'nomad-schema-plugin-example'
-version = '1.0'
-description = 'An example schema plugin for NOMAD.'
+name = "nomad-ML-generate-smiles-reader"
+dynamic = ["version"]
+description = "A NOMAD reader for ML-generated SMILES molecules."
 readme = "README.md"
-authors = [{ name = "The NOMAD Authors" }]
+authors = [
+    { name = "Sarthak Kapoor", email = "sarthak.kapoor@physik.hu-berlin.de" },
+    { name = "Jose M. Pizarro", email = "jose.pizarro@physik.hu-berlin.de" },
+]
 license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
 dependencies = [
-    "nomad-lab>=1.2.0"
+    "nomad-lab>=1.2.2dev399",
+    "nbformat>=5.9.2",
 ]
 
 [project.urls]
-homepage = "https://github.com/nomad-coe/nomad-schema-example-plugin"
+"Homepage" = "https://github.com/FAIRmat-NFDI/nomad-ML-generate-smiles-reader"
+"Bug Tracker" = "https://github.com/FAIRmat-NFDI/nomad-ML-generate-smiles-reader/issues"
+"Documentation" = "https://fairmat-nfdi.github.io/nomad-ML-generate-smiles-reader/"
 
 [project.optional-dependencies]
 dev = [
-    'ruff>=0.2.0',
-    'pytest'
+    "ruff>=0.2.0",
+    "pytest",
+    "structlog==22.3.0"
 ]
-    
-[tool.ruff]   
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
+
+[tool.ruff]
+include = ["src/nomad_ML_smiles_reader/*.py", "tests/*.py"]
+lint.select = [
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "PL", # pylint
 ]
+lint.ignore = [
+    "E501", # Line too long ({width} > {limit} characters)
+    "E701", # Multiple statements on one line (colon)
+    "E731", # Do not assign a lambda expression, use a def
+    "E402",  # Module level import not at top of file
+    "PLR0911", # Too many return statements
+    "PLR0912", # Too many branches
+    "PLR0913", # Too many arguments in function definition
+    "PLR0915", # Too many statements
+    "PLR2004", # Magic value used instead of constant
+    "PLW0603", # Using the global statement
+    "PLW2901", # redefined-loop-name
+    "PLR1714", # consider-using-in
+    "PLR5501", # else-if-used
+]
+lint.fixable = ["ALL"]
 
 # Same as Black.
 line-length = 88
@@ -54,29 +63,6 @@ indent-width = 4
 
 # Assume Python 3.9
 target-version = "py39"
-
-[tool.ruff.lint]
-select = [
-    # pycodestyle
-    "E",
-    # Pyflakes
-    "F",
-    # pyupgrade
-    "UP",
-   # isort
-    "I",
-    # pylint 
-    "PL"
-]
-
-ignore = [
-    "F403", # 'from module import *' used; unable to detect undefined names
-]
-    
-fixable = ["ALL"]
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 # this is entirely optional, you can remove this if you wish to
 [tool.ruff.format]
@@ -94,7 +80,7 @@ line-ending = "auto"
 
 
 [tool.setuptools.packages.find]
-include = ["nomadschemaexample*"]
+where = ["src"]
 
 [tool.setuptools.package-data]
-nomadschemaexample = ['*/nomad_plugin.yaml']
+nomad_ML_smiles_reader = ['*/nomad_plugin.yaml']
