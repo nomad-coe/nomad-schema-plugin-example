@@ -1,1 +1,1 @@
-from .schema import *
+from .reader import *
