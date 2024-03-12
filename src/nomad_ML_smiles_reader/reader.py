@@ -19,63 +19,44 @@
 import os
 import json
 import codecs
+import yaml
 
-from nomad.metainfo import Section, Quantity, SubSection
-
+from nomad.metainfo import Package
 from nomad.datamodel import EntryArchive
-from nomad.datamodel.data import EntryData
-from nomad.datamodel.metainfo.basesections import Entity, Activity
 
-from runschema.run import Program
-from runschema.system import System as BaseSystem
-from runschema.method import Method as BaseMethod
-from runschema.calculation import BaseCalculation
+from nomad_ML_smiles_reader.schema import Program, ModelSystem, Simulation
 
 
-class ModelSystem(BaseSystem):
-    """
-    Section used to extend the corrent `System` NOMAD base section. This is used because in the
-    `System` section (see https://github.com/nomad-coe/nomad-schema-plugin-run/blob/develop/runschema/system.py#L698)
-    a concept like `smiles` to describe molecules with strings is not defined.
-    """
-
-    m_def = Section()
-
-    smiles = Quantity(
-        type=str,
-        description="""
-        Notation for the structure of molecules following the Simplified Molecular-Input Line-Entry
-        System (SMILES), https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system.
-        """,
-    )
-
-
-class Simulation(Activity, EntryData):
-    m_def = Section()
-
-    program = SubSection(sub_Section=Program.m_def)
-
-    model_system = SubSection(sub_section=ModelSystem.m_def, repeats=True)
-
-    model_method = SubSection(sub_section=BaseMethod.m_def)
-
-    outputs = SubSection(sub_section=BaseCalculation.m_def, repeats=True)
-
-
-#### START OF THE SCRIPT ####
 # Defining paths to the file
 current_dir = os.path.dirname(os.path.abspath(__file__))
 test_file = '../../tests/data/testing_two_molecules.json'
 dirname = os.path.dirname(test_file)
 basename = os.path.basename(test_file).strip('.json')
 nomad_file = f'{dirname}/{basename}_NOMAD.archive.json'
+nomad_schema_file = f'{dirname}/{basename}_NOMADschema.archive.yaml'
 filepath = os.path.normpath(os.path.join(current_dir, test_file))
 nomad_filepath = os.path.normpath(os.path.join(current_dir, nomad_file))
+nomad_schema_filepath = os.path.normpath(os.path.join(current_dir, nomad_schema_file))
+
+
+# Creating the NOMAD schema YAML file
+def create_schema():
+    return EntryArchive(
+        definitions=Package(
+            sections=[Program.m_def, ModelSystem.m_def, Simulation.m_def]
+        )
+    )
+
+
+# And saving it to the YAML that we need to upload
+yaml_schema = create_schema().m_to_dict(with_out_meta=True)
+with open(nomad_schema_filepath, 'wt') as outfile:
+    outfile.write(yaml.dump(yaml_schema, indent=2))
 
 # Loading JSON data
 data = json.load(codecs.open(filepath, 'r', 'utf-8-sig'))
 
-
+# And parsing into NOMAD archive
 archive = EntryArchive()
 simulation = Simulation(
     program=Program(
@@ -87,9 +68,13 @@ system = ModelSystem(smiles=data[0].get('Smiles', ''))
 simulation.model_system.append(system)
 archive.m_add_sub_section(EntryArchive.data, simulation)
 
-# Patch
+# # Patch
 json_archive = archive.m_to_dict()
-json_archive['data']['m_def'] = str(Activity().m_def).split(':')[0]
+# Replace the schema reference
+json_archive['data']['m_def'] = (
+    f'../upload/raw/{os.path.basename(nomad_schema_file)}#/definitions/section_definitions/Simulation'
+)
 
-with open(nomad_filepath, 'w') as outfile:
-    json.dump(json_archive, outfile)
+# And saving it to the JSON that we need to upload
+with open(nomad_filepath, 'wt') as outfile:
+    outfile.write(json.dumps(json_archive, indent=2))

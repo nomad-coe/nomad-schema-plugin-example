@@ -1,0 +1,14 @@
+{
+  "data": {
+    "m_def": "../upload/raw/testing_two_molecule_NOMADschema.archive.yaml#/definitions/section_definitions/Simulation",
+    "program": {
+      "name": "name for your ML sub-program? Or perhaps the name of the software used?",
+      "version": "leave empty if not needed"
+    },
+    "model_system": [
+      {
+        "smiles": "O=C(Cc1ccccc1[N+](=O)[O-])CC(=O)N1C(=O)OC[C@@H]1Cc1ccccc1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+definitions:
+  section_definitions:
+  - base_sections:
+    - nomad.datamodel.data.ArchiveSection
+    description: A base section used to specify a well-defined program used for simulations.
+    name: Program
+    quantities:
+    - description: The name of the program.
+      name: name
+      type:
+        type_data: str
+        type_kind: python
+    - description: The version label of the program.
+      name: version
+      type:
+        type_data: str
+        type_kind: python
+  - base_sections:
+    - nomad.datamodel.metainfo.basesections.Entity
+    description: A base section used to specify the system information used for simulations.
+    name: ModelSystem
+    quantities:
+    - description: 'Notation for the structure of molecules following the Simplified
+        Molecular-Input Line-Entry
+
+        System (SMILES), https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system.'
+      name: smiles
+      type:
+        type_data: str
+        type_kind: python
+  - base_sections:
+    - nomad.datamodel.metainfo.basesections.Activity
+    - nomad.datamodel.data.EntryData
+    name: Simulation
+    sub_sections:
+    - name: program
+      sub_section: /definitions/section_definitions/0
+    - name: model_system
+      repeats: true
+      sub_section: /definitions/section_definitions/1
