@@ -1,8 +1,8 @@
 site_name: Documentation
 site_description: |
-  The documentation for NOMAD schema plugin example
+  The documentation for the NOMAD analysis tools
 site_author: The NOMAD Authors
-repo_url: https://github.com/nomad-coe/nomad-schema-plugin-example
+repo_url: https://github.com/FAIRmat-NFDI/nomad-analysis
 
 nav:
   - Home: index.md

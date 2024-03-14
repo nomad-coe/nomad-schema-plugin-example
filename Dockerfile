@@ -12,4 +12,4 @@ COPY \
 
 RUN python -m build --sdist
 
-RUN pip install dist/nomad-schema-plugin-example-*.tar.gz
+RUN pip install dist/nomad-analysis-*.tar.gz
