@@ -54,31 +54,33 @@ pip install -e .[dev] --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/21
 
 
 ### Setting up plugin on your local installation
-Read the [NOMAD plugin documentation](https://nomad-lab.eu/prod/v1/staging/docs/howto/oasis/plugins_install.html) for all details on how to deploy the plugin on your NOMAD instance.
+Read the [NOMAD plugin documentation](https://nomad-lab.eu/prod/v1/staging/docs/howto/oasis/plugins_install.html) for all details on how to deploy the plugin on your local NOMAD installation.
 
-The ```src/nomad_analysis/nomad_plugin.yaml``` file contains information for defining the plugin:
+In order to deploy the plugin in your local NOMAD installation, follow the next steps:
+
+1. The ```src/nomad_analysis/nomad_plugin.yaml``` file contains information for defining the plugin:
 ```yaml
 plugin_type: schema
 name: schemas/nomad_analysis
 description: |
   This plugin is used to analyze parsed raw data from the NOMAD standard schema.
 ```
-
-And the ```nomad.yaml``` configuration file adds the pluging to your NOMAD instance:
+And the ```nomad.yaml``` configuration file:
 ```yaml
 plugins:
-  include: 'schemas/nomad_analysis'
+  include:
+    - 'schemas/nomad_analysis'
   options:
     schemas/nomad_analysis:
       python_package: nomad_analysis
 ```
-
-You also need to add the package folder to the `PYTHONPATH` of the Python environment of your local NOMAD installation. This can be done by specifying the relative path to this repository. Either run the following command every time you start a new terminal for running the appworker, or add it to your virtual environment in `<path-to-local-nomad-installation>/.pyenv/bin/activate` file:
+2. Add to your local NOMAD installation the same lines of your plugin ```nomad.yaml``` file.
+3. Add to your local NOMAD installation environment the `PYTHONPATH` to your plugin. This can be done either running the following command every time you start a new terminal for running the appworker, or addubg it to your virtual environment in `<path-to-local-nomad-installation>/.pyenv/bin/activate` file:
 ```sh
-export PYTHONPATH="$PYTHONPATH:<path-to-nomad-analysis-cloned-repo>"
+export PYTHONPATH="$PYTHONPATH:<path-to-nomad-analysis-cloned-repo>/src"
 ```
 
-If you are working in this repository, you just need to activate the environment to start working using the ```nomad-analysis``` package.
+If you are working in this repository, you just need to activate the environment to start working using the ```nomad-analysis``` package locally in your own Python scripts.
 
 ### Run linting and auto-formatting
 
