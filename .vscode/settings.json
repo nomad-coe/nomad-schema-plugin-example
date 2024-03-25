@@ -17,8 +17,11 @@
     "**/node_modules": true
   },
   "python.testing.pytestPath": "pytest",
-  "python.testing.pytestArgs": ["tests"],
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
   "python.testing.unittestEnabled": false,
   "editor.defaultFormatter": "charliermarsh.ruff",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "python.testing.pytestEnabled": true
 }

@@ -60,15 +60,39 @@ class ModelSystem(Entity):
         """,
     )
 
+class BaseMethod(Entity):
+    """
+    A base section used to specify the system solver information used for simulations.
+    """
+
+    smiles = Quantity(
+        type=str,
+        description="""
+        Details on the simulation method used to generate data, https://www.3ds.com/assets/invest/2023-10/biovia-material-studio-vamp.pdf.
+        """,
+    )
+
+class Data(Entity):
+    """
+    A base section used to specify the system solver information used for simulations.
+    """
+
+    smiles = Quantity(
+        type=np.float64,
+        description="""
+        Total energy from semiempirical calculation. This value is dependent on the basis selected and should not be used as an absolute value.
+        """,
+    )
+
 
 class Simulation(Activity, EntryData):
     program = SubSection(section=Program.m_def)
 
     model_system = SubSection(section=ModelSystem.m_def, repeats=True)
 
-    # model_method = SubSection(section=BaseMethod.m_def)
+    model_method = SubSection(section=BaseMethod.m_def, repeats=True)
 
-    # outputs = SubSection(section=BaseCalculation.m_def, repeats=True)
+    outputs = SubSection(section=Data.m_def)
 
 
 m_package.__init_metainfo__()
