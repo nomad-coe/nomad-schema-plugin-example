@@ -20,6 +20,12 @@ dependencies = [
     "nomad-lab>=1.2.2dev399",
     "nomad-schema-plugin-run@git+https://github.com/nomad-coe/nomad-schema-plugin-run.git@develop",
     "pyyaml==6.0",
+    "chemnlp@git+https://github.com/OpenBioML/chemnlp@main",
+    "backoff==2.2.1",
+    "deepsmiles==1.0.1",
+    "pubchempy==1.0.4",
+    "selfies==2.1.1",
+    "rdkit==2023.9.5",
 ]
 
 [project.urls]
