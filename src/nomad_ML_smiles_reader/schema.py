@@ -65,34 +65,94 @@ class BaseMethod(Entity):
     A base section used to specify the system solver information used for simulations.
     """
 
-    smiles = Quantity(
+    methods = Quantity(
         type=str,
         description="""
         Details on the simulation method used to generate data, https://www.3ds.com/assets/invest/2023-10/biovia-material-studio-vamp.pdf.
         """,
     )
 
-class Data(Entity):
+class ModelData(Entity):
     """
     A base section used to specify the system solver information used for simulations.
     """
 
-    smiles = Quantity(
+    totalenergy = Quantity(
         type=np.float64,
         description="""
         Total energy from semiempirical calculation. This value is dependent on the basis selected and should not be used as an absolute value.
         """,
     )
+    electronicenergy = Quantity(
+        type=np.float64,
+        description="""
+        Valance electron energy from semiempirical calculation.""",
+    )
 
+    repulsiveenergy = Quantity(
+        type=np.float64,
+        description="""
+        Repulsive Energy.
+        """, #FIXME: Add description
+    )
 
+    ionizationpotential = Quantity(
+        type=np.float64,
+        description="""
+        Ionization Potential.
+        """, #FIXME: Add description
+    )
+
+    homoenergy = Quantity(
+        type=np.float64,
+        description="""
+        HOMO Energy.
+        """, #FIXME: Add description
+    )
+    lumoenergy = Quantity(
+        type=np.float64,
+        description="""
+        LUMO Energy.
+        """, #FIXME: Add description
+    )
+    heatofformation = Quantity(
+        type=np.float64,
+        description="""
+        Heat of Formation.
+        """, #FIXME: Add description
+    )
+    totaldipole = Quantity(
+        type=np.float64,
+        description="""
+        Total Dipole Moment.
+        """, #FIXME: Add description
+    )
+    enthalpy = Quantity(
+        type=np.float64,
+        description="""
+        Enthalpy.
+        """, #FIXME: Add description
+    )
+    entropy = Quantity(
+        type=np.float64,
+        description="""
+        Entropy.
+        """, #FIXME: Add description
+    )
+    heatcapacity = Quantity(
+        type=np.float64,
+        description="""
+        Heat Capacity.
+        """, #FIXME: Add description
+    )
 class Simulation(Activity, EntryData):
     program = SubSection(section=Program.m_def)
 
+    model_method = SubSection(section=BaseMethod.m_def)
+
     model_system = SubSection(section=ModelSystem.m_def, repeats=True)
 
-    model_method = SubSection(section=BaseMethod.m_def, repeats=True)
-
-    outputs = SubSection(section=Data.m_def)
+    model_output = SubSection(section=ModelData.m_def)
 
 
 m_package.__init_metainfo__()

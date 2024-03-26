@@ -2,12 +2,59 @@
   "data": {
     "m_def": "../upload/raw/testing_two_molecule_NOMADschema.archive.yaml#/definitions/section_definitions/Simulation",
     "program": {
-      "name": "name for your ML sub-program? Or perhaps the name of the software used?",
-      "version": "leave empty if not needed"
+      "name": "Biovia Materials Studio",
+      "version": "2022"
+    },
+    "model_method": {
+      "methods": "VAMP"
     },
     "model_system": [
       {
         "smiles": "O=C(Cc1ccccc1[N+](=O)[O-])CC(=O)N1C(=O)OC[C@@H]1Cc1ccccc1"
+      },
+      {
+        "m_def": "schema.ModelData",
+        "totalenergy": -110652.4807054
+      },
+      {
+        "m_def": "schema.ModelData",
+        "electronicenergy": -841646.876568542
+      },
+      {
+        "m_def": "schema.ModelData",
+        "repulsiveenergy": 730994.448395075
+      },
+      {
+        "m_def": "schema.ModelData",
+        "ionizationpotential": 9.914713
+      },
+      {
+        "m_def": "schema.ModelData",
+        "homoenergy": -9.914709
+      },
+      {
+        "m_def": "schema.ModelData",
+        "lumoenergy": -1.107813
+      },
+      {
+        "m_def": "schema.ModelData",
+        "heatofformation": -115.869859
+      },
+      {
+        "m_def": "schema.ModelData",
+        "totaldipole": 8.498
+      },
+      {
+        "m_def": "schema.ModelData",
+        "enthalpy": 16.7549301
+      },
+      {
+        "m_def": "schema.ModelData",
+        "entropy": 193.5663
+      },
+      {
+        "m_def": "schema.ModelData",
+        "heatcapacity": 96.211
       }
     ]
   }

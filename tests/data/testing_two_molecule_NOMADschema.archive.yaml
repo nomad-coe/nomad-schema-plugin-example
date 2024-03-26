@@ -35,6 +35,10 @@ definitions:
     sub_sections:
     - name: program
       sub_section: /definitions/section_definitions/0
+    - name: model_method
+      sub_section: schema.BaseMethod
     - name: model_system
       repeats: true
       sub_section: /definitions/section_definitions/1
+    - name: model_output
+      sub_section: schema.ModelData
