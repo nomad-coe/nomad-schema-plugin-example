@@ -28,6 +28,50 @@ definitions:
       type:
         type_data: str
         type_kind: python
+    - description: 'Notation for the structure of molecules following the SELF-referencing
+        embedded string
+
+        (SELFIES) , https://www.sciencedirect.com/science/article/pii/S2666389922002069.'
+      name: selfies
+      type:
+        type_data: str
+        type_kind: python
+    - description: Notation for the structure of molecules following the DeepSMILES,
+        https://chemrxiv.org/engage/chemrxiv/article-details/60c73ed6567dfe7e5fec388d.
+      name: deepsmiles
+      type:
+        type_data: str
+        type_kind: python
+    - description: Notation for the structure of molecules following the canonical
+        SMILES, https://pubs.acs.org/doi/abs/10.1021/ci00062a008.
+      name: canonical
+      type:
+        type_data: str
+        type_kind: python
+    - description: 'Notation for the structure of molecules following the IUPAC International
+        Chemical Identifier,
+
+        (InChI), https://iupac.org/who-we-are/divisions/division-details/inchi/'
+      name: inchi
+      type:
+        type_data: str
+        type_kind: python
+    - description: 'Notation for the structure of molecules following the Sequential
+        Attachment-based Fragment
+
+        Embedding (SAFE), https://arxiv.org/abs/2310.10773.'
+      name: safe
+      type:
+        type_data: str
+        type_kind: python
+    - description: 'Notation for the structure of molecules following the International
+        Union Pure and Applied
+
+        Chemistry (IUPAC), https://iupac.org/what-we-do/.'
+      name: iupac
+      type:
+        type_data: str
+        type_kind: python
   - base_sections:
     - nomad.datamodel.metainfo.basesections.Activity
     - nomad.datamodel.data.EntryData
@@ -40,5 +84,8 @@ definitions:
     - name: model_system
       repeats: true
       sub_section: /definitions/section_definitions/1
-    - name: model_output
-      sub_section: schema.ModelData
+    - name: model_method
+      repeats: true
+      sub_section: schema.BaseMethod
+    - name: outputs
+      sub_section: schema.Data
