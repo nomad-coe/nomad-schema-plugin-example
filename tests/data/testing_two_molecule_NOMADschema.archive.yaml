@@ -84,8 +84,5 @@ definitions:
     - name: model_system
       repeats: true
       sub_section: /definitions/section_definitions/1
-    - name: model_method
-      repeats: true
-      sub_section: schema.BaseMethod
-    - name: outputs
+    - name: model_output
       sub_section: schema.Data

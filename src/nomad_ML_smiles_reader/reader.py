@@ -20,8 +20,16 @@ import os
 import json
 import codecs
 import yaml
+import sys
 
-from chemnlp.data.reprs import *
+sys.path.append('../chemnlpEU/src/')
+from chemnlp.data.reprs import (  # smiles_to_safe,; smiles_to_iupac_name,
+    smiles_to_canoncial,
+    smiles_to_deepsmiles,
+    smiles_to_inchi,
+    smiles_to_selfies,
+    smiles_to_safe,
+)
 
 from nomad.metainfo import Package
 from nomad.datamodel import EntryArchive
@@ -87,17 +95,12 @@ try:
     inchi_id = smiles_to_inchi(smiles=smiles_id)
 except Exception:
     inchi_id = ''
-try:
-    safe_id = smiles_to_safe(smiles=smiles_id)
-except Exception:
-    safe_id = ''
 system = ModelSystem(
     smiles=smiles_id,
     selfies=selfies_id,
     deepsmiles=deepsmiles_id,
     canonical=canonical_id,
     inchi=inchi_id,
-    safe=safe_id,
 )  # read SMILES
 simulation.model_system.append(system)
 archive.m_add_sub_section(EntryArchive.data, simulation)
