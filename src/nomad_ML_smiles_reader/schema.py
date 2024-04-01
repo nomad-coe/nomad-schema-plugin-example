@@ -79,18 +79,21 @@ class ModelData(Entity):
 
     totalenergy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         Total energy from semiempirical calculation. This value is dependent on the basis selected and should not be used as an absolute value.
         """,
     )
     electronicenergy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         Valance electron energy from semiempirical calculation.""",
     )
 
     repulsiveenergy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         Repulsive Energy.
         """, #FIXME: Add description
@@ -98,6 +101,7 @@ class ModelData(Entity):
 
     ionizationpotential = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         Ionization Potential.
         """, #FIXME: Add description
@@ -105,46 +109,127 @@ class ModelData(Entity):
 
     homoenergy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         HOMO Energy.
         """, #FIXME: Add description
     )
     lumoenergy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         LUMO Energy.
         """, #FIXME: Add description
     )
     heatofformation = Quantity(
         type=np.float64,
+        unit='kcal/mol', #TODO: Check if this is the correct unit
         description="""
         Heat of Formation.
         """, #FIXME: Add description
     )
     totaldipole = Quantity(
         type=np.float64,
+        unit='', #TODO: Check if this is the correct unit
         description="""
         Total Dipole Moment.
         """, #FIXME: Add description
     )
     enthalpy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         Enthalpy.
         """, #FIXME: Add description
     )
     entropy = Quantity(
         type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
         description="""
         Entropy.
         """, #FIXME: Add description
     )
     heatcapacity = Quantity(
         type=np.float64,
+        unit='kcal/mol', #TODO: Check if this is the correct unit
         description="""
         Heat Capacity.
         """, #FIXME: Add description
     )
+
+    zeropoint = Quantity(
+        type=np.float64,
+        unit='eV', #TODO: Check if this is the correct unit
+        description="""
+        Zero Points Energy.
+        """, #FIXME: Add description
+    )
+
+    dipolemoment = Quantity(
+        type=np.float64,
+        shape=[1, 3],
+        description="""
+        Dipole Moment in three directions.
+        """, #FIXME: Add description
+    )
+
+    qudrupolemoment = Quantity(
+        type=np.float64,
+        shape=[1, 6],
+        description="""
+        Qudrupole Moment.
+        """, #FIXME: Add description
+    )
+    octupolemoment = Quantity(
+        type=np.float64,
+        shape=[1, 10],
+        description="""
+        Octupole Moment.
+        """, #FIXME: Add description
+    )
+
+    vibrationalfreq = Quantity(
+        type=np.float64,
+        unit='THz', #TODO: Check if this is the correct unit
+        shape=[1,'*'],
+        description="""
+        Vibrational Frequencies associated with Reduced Mass.
+        """, #FIXME: Add description
+    )
+
+    vibrationalmass= Quantity(
+        type=np.float64,
+        shape=[1,'*'],
+        description="""
+        Reduced Mass as a function of Vibrational Frequency
+        """, #FIXME: Add description
+    )
+
+    vibrationalintensityfreq = Quantity(
+        type=np.float64,
+        unit='THz', #TODO: Check if this is the correct unit
+        shape=[1,'*'],
+        description="""
+        Frequencies associated with Vibrational Strength.
+        """, #FIXME: Add description
+    )
+    vibrationalintensity = Quantity(
+        type=np.float64,
+        shape=[1,'*'],
+        description="""
+        Vibrational Strength as a function of Vibrational Frequency.
+        """, #FIXME: Add description
+    )
+
+    electroniclevels = Quantity(
+        #type={type_kind: uvis, type_data: [int, np.float64, np.float64, np.float64, int]},
+        type = str,
+        #shape=[5,'*'],
+        description="""
+        UV-VIS Data. Columns: Excited State Number, Frequency THz, Wavelength nm, Oscillator Strength, Transition Type.
+        """, #FIXME: Add description
+    )
+
 class Simulation(Activity, EntryData):
     program = SubSection(section=Program.m_def)
 
@@ -153,6 +238,5 @@ class Simulation(Activity, EntryData):
     model_system = SubSection(section=ModelSystem.m_def, repeats=True)
 
     model_output = SubSection(section=ModelData.m_def)
-
 
 m_package.__init_metainfo__()

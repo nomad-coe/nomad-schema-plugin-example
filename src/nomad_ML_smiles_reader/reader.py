@@ -60,50 +60,101 @@ data = json.load(codecs.open(filepath, 'r', 'utf-8-sig')) #inputfilename.json
 archive = EntryArchive()
 simulation = Simulation(
     program=Program(
-        name='Biovia Materials Studio',
+        name='BIOVIA Materials Studio',
         version='2022',
     ),
     model_method=BaseMethod(
-        methods='VAMP',
+        methods='Semi-Empirical Molecular Orbital Package - VAMP',
     )
 )
+#SMILES Representation
 system = ModelSystem(smiles=data[0].get('Smiles', '')) #read SMILES
 simulation.model_system.append(system)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Total Energy
 data1 = ModelData(totalenergy=data[0].get('MSVAMP_TotalEnergy', '')) #read Total Energy
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Electronic Energy
 data1 = ModelData(electronicenergy=data[0].get('MSVAMP_ElectronicEnergy', '')) #read Electronic Energy
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Repulsive Energy
 data1 = ModelData(repulsiveenergy=data[0].get('MSVAMP_RepulsiveEnergy', '')) #read Repulsive Energy
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Ionization Potential
 data1 = ModelData(ionizationpotential=data[0].get('MSVAMP_IonizationPotential', '')) #read Ionization Potential
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#HOMO Energy
 data1 = ModelData(homoenergy=data[0].get('MSVAMP_HOMOEnergy', '')) #read HOMO Energy
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#LUMO Energy
 data1 = ModelData(lumoenergy=data[0].get('MSVAMP_LUMOEnergy', '')) #read LUMO Energy
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Heat of Formation
 data1 = ModelData(heatofformation=data[0].get('MSVAMP_HeatOfFormation', '')) #
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Total Dipole
 data1 = ModelData(totaldipole=data[0].get('MSVAMP_TotalDipole', '')) #
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Enthalpy
 data1 = ModelData(enthalpy=data[0].get('MSVAMP_Enthalpy', '')) #
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Entropy
 data1 = ModelData(entropy=data[0].get('MSVAMP_Entropy', '')) #
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Heat Capacity
 data1 = ModelData(heatcapacity=data[0].get('MSVAMP_HeatCapacity', '')) #
 simulation.model_system.append(data1)
 archive.m_add_sub_section(EntryArchive.data, simulation)
+#Zero Point Energy
+data1 = ModelData(zeropoint=data[0].get('MSVAMP_ZeroPointEnergy', '')) #
+simulation.model_system.append(data1)
+archive.m_add_sub_section(EntryArchive.data, simulation)
+#Dipole Moment
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(dipolemoment=data[0].get('MSVAMP_DipoleMoment')) #
+simulation.model_system.append(data1)
+#Quadrupole Moment
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(qudrupolemoment=data[0].get('MSVAMP_QuadrupoleMoment')) #
+simulation.model_system.append(data1)
+#Octupole Moment
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(octupolemoment=data[0].get('MSVAMP_OctupoleMoment')) #
+simulation.model_system.append(data1)
 
+
+#Vibrational Frequencies
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(vibrationalfreq=data[0].get('MSVAMP_VibrationalFrequency')) #
+simulation.model_system.append(data1)
+#Vibrational Reduced Mass
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(vibrationalmass=data[0].get('MSVAMP_VibrationalReducedMass')) #
+simulation.model_system.append(data1)
+
+#Vibrational Stength Frequency
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(vibrationalintensityfreq=data[0].get('MSVAMP_VibrationalIntensity_Frequency')) #
+simulation.model_system.append(data1)
+#Vibrational Strength
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(vibrationalintensity=data[0].get('MSVAMP_VibrationalIntensity_Strength')) #
+simulation.model_system.append(data1)
+
+#UV-VIS Data -  Electronic Levels
+archive.m_add_sub_section(EntryArchive.data, simulation)
+data1 = ModelData(electroniclevels=data[0].get('MSVAMP_ElectronicLevels').split('\n')) #
+simulation.model_system.append(data1)
 
 # # Patch
 json_archive = archive.m_to_dict()
