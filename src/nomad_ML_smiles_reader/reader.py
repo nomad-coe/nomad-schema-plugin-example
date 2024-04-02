@@ -20,16 +20,8 @@ import os
 import json
 import codecs
 import yaml
-import sys
 
-sys.path.append('../chemnlpEU/src/')
-from chemnlp.data.reprs import (  # smiles_to_safe,; smiles_to_iupac_name,
-    smiles_to_canoncial,
-    smiles_to_deepsmiles,
-    smiles_to_inchi,
-    smiles_to_selfies,
-    smiles_to_safe,
-)
+from chemnlp.data.reprs import *
 
 from nomad.metainfo import Package
 from nomad.datamodel import EntryArchive
