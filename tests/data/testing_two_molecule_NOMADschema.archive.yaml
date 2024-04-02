@@ -85,4 +85,4 @@ definitions:
       repeats: true
       sub_section: /definitions/section_definitions/1
     - name: model_output
-      sub_section: schema.Data
+      sub_section: schema.ModelData
