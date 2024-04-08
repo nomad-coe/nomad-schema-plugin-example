@@ -37,7 +37,8 @@ dependencies = [
 dev = [
     "ruff>=0.2.0",
     "pytest",
-    "structlog==22.3.0"
+    "structlog==22.3.0",
+    "lxml_html_clean>=0.1.0",
 ]
 
 [tool.ruff]
