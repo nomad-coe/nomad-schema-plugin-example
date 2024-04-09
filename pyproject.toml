@@ -22,7 +22,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
 ]
 dependencies = [
-    "nomad-lab>=1.2.2dev457",
+    "nomad-lab>=1.2.2dev578",
     "nbformat>=5.9.2",
 ]
 
