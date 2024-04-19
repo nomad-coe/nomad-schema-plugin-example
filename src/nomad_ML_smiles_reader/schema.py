@@ -18,10 +18,13 @@
 
 import numpy as np
 
-from nomad.metainfo import Package, Section, Quantity, SubSection
+from typing import Optional
 
+from nomad.metainfo import Package, Section, Quantity, SubSection
 from nomad.datamodel.data import ArchiveSection, EntryData
-from nomad.datamodel.metainfo.basesections import Entity, Activity
+from nomad.datamodel.metainfo.basesections import System, Activity
+
+from .properties import *
 
 
 m_package = Package()
@@ -47,7 +50,7 @@ class Program(ArchiveSection):
     )
 
 
-class ModelSystem(Entity):
+class ModelSystem(System):
     """
     A base section used to specify the system information used for simulations.
     """
@@ -106,13 +109,32 @@ class ModelSystem(Entity):
         """,
     )
 
+    def resolve_chemical_ids(self) -> None:
+        """
+        Resolve the chemical IDs from the SMILES string.
+        """
+        # We extract information from the SMILES string
+        for label_id in ['selfies', 'deepsmiles', 'canonical', 'inchi']:
+            try:
+                conversion_funct = globals()[f'smiles_to_{label_id}']
+                result = conversion_funct(smiles=self.smiles)
+            except Exception:
+                result = ''
+            setattr(self, f'{label_id}_id', result)
 
-class BaseMethod(Entity):
+    def normalize(self, archive, logger) -> None:
+        super().normalize(archive, logger)
+
+        # We extract information from the SMILES string
+        self.resolve_chemical_ids()
+
+
+class ModelMethod(ArchiveSection):
     """
-    A base section used to specify the system solver information used for simulations.
+    A base section used to specify the method solver information used for simulations.
     """
 
-    methods = Quantity(
+    method_name = Quantity(
         type=str,
         description="""
         Details on the simulation method used to generate data, https://www.3ds.com/assets/invest/2023-10/biovia-material-studio-vamp.pdf.
@@ -279,14 +301,74 @@ class ModelData(Entity):
     )
 
 
+class Outputs(ArchiveSection):
+    """
+    Output properties of a simulation. This base class can be used for inheritance in any of the output properties
+    defined in this schema.
+    """
+
+    model_system_ref = Quantity(
+        type=ModelSystem,
+        description="""
+        Reference to the `ModelSystem` section to which the output property references to and on
+        on which the simulation is performed.
+        """,
+    )
+
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    # List of properties
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+    total_energy = SubSection(sub_section=TotalEnergy.m_def)
+
+    electronic_energy = SubSection(sub_section=ElectronicEnergy.m_def)
+
+    repulsive_energy = SubSection(sub_section=RepulsiveEnergy.m_def)
+
+    ionization_potential = SubSection(sub_section=IonizationPotential.m_def)
+
+    gap_energy = SubSection(sub_section=GapEnergy.m_def)
+
+    heat_of_formation = SubSection(sub_section=HeatOfFormation.m_def)
+
+    multipole_moment = SubSection(sub_section=MultipoleMoment.m_def)
+
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+    def set_model_system_ref(self) -> Optional[ModelSystem]:
+        """
+        Set the reference to the last ModelSystem if this is not set in the output. This is only
+        valid if there is only one ModelSystem in the parent section.
+
+        Returns:
+            (Optional[ModelSystem]): The reference to the last ModelSystem.
+        """
+        if self.m_parent is not None:
+            model_systems = self.m_parent.model_system
+            if model_systems is not None and len(model_systems) == 1:
+                return model_systems[-1]
+        return None
+
+    def normalize(self, archive, logger) -> None:
+        super().normalize(archive, logger)
+
+        # Set ref to the last ModelSystem if this is not set in the output
+        if self.model_system_ref is None:
+            self.model_system_ref = self.set_model_system_ref()
+
+
 class Simulation(Activity, EntryData):
     program = SubSection(section=Program.m_def)
 
-    model_method = SubSection(section=BaseMethod.m_def)
-
     model_system = SubSection(section=ModelSystem.m_def, repeats=True)
 
-    model_output = SubSection(section=ModelData.m_def)
+    model_method = SubSection(section=ModelMethod.m_def, repeats=False)
+
+    outputs = SubSection(section=Outputs.m_def, repeats=True)
+
+    def normalize(self, archive, logger) -> None:
+        super().normalize(archive, logger)
 
 
 m_package.__init_metainfo__()
