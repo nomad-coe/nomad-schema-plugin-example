@@ -60,6 +60,53 @@ class ModelSystem(Entity):
         """,
     )
 
+    selfies = Quantity(
+        type=str,
+        description="""
+        Notation for the structure of molecules following the SELF-referencing embedded string
+        (SELFIES) , https://www.sciencedirect.com/science/article/pii/S2666389922002069.
+        """,
+    )
+
+    deepsmiles = Quantity(
+        type=str,
+        description="""
+        Notation for the structure of molecules following the DeepSMILES, https://chemrxiv.org/engage/chemrxiv/article-details/60c73ed6567dfe7e5fec388d.
+        """,
+    )
+
+    canonical = Quantity(
+        type=str,
+        description="""
+        Notation for the structure of molecules following the canonical SMILES, https://pubs.acs.org/doi/abs/10.1021/ci00062a008.
+        """,
+    )
+
+    inchi = Quantity(
+        type=str,
+        description="""
+        Notation for the structure of molecules following the IUPAC International Chemical Identifier,
+        (InChI), https://iupac.org/who-we-are/divisions/division-details/inchi/
+        """,
+    )
+
+    safe = Quantity(
+        type=str,
+        description="""
+        Notation for the structure of molecules following the Sequential Attachment-based Fragment
+        Embedding (SAFE), https://arxiv.org/abs/2310.10773.
+        """,
+    )
+
+    iupac = Quantity(
+        type=str,
+        description="""
+        Notation for the structure of molecules following the International Union Pure and Applied
+        Chemistry (IUPAC), https://iupac.org/what-we-do/.
+        """,
+    )
+
+
 class BaseMethod(Entity):
     """
     A base section used to specify the system solver information used for simulations.

@@ -22,6 +22,6 @@
   ],
   "python.testing.unittestEnabled": false,
   "editor.defaultFormatter": "charliermarsh.ruff",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "python.testing.pytestEnabled": true
 }

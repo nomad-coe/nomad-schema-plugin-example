@@ -21,6 +21,8 @@ import json
 import codecs
 import yaml
 
+from chemnlp.data.reprs import *
+
 from nomad.metainfo import Package
 from nomad.datamodel import EntryArchive
 
@@ -67,8 +69,31 @@ simulation = Simulation(
         methods='Semi-Empirical Molecular Orbital Package - VAMP',
     )
 )
-#SMILES Representation
-system = ModelSystem(smiles=data[0].get('Smiles', '')) #read SMILES
+# Parsing SMILES and other additional strings (using ChemNLP functionalities)
+smiles_id = data[0].get('Smiles', '')
+try:
+    selfies_id = smiles_to_selfies(smiles=smiles_id)
+except Exception:
+    selfies_id = ''
+try:
+    deepsmiles_id = smiles_to_deepsmiles(smiles=smiles_id)
+except Exception:
+    deepsmiles_id = ''
+try:
+    canonical_id = smiles_to_canoncial(smiles=smiles_id)
+except Exception:
+    canonical_id = ''
+try:
+    inchi_id = smiles_to_inchi(smiles=smiles_id)
+except Exception:
+    inchi_id = ''
+system = ModelSystem(
+    smiles=smiles_id,
+    selfies=selfies_id,
+    deepsmiles=deepsmiles_id,
+    canonical=canonical_id,
+    inchi=inchi_id,
+)  # read SMILES
 simulation.model_system.append(system)
 archive.m_add_sub_section(EntryArchive.data, simulation)
 #Total Energy
