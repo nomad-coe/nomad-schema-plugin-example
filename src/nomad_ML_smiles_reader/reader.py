@@ -28,8 +28,14 @@ from nomad.units import ureg
 from nomad.metainfo import Package
 from nomad.datamodel import EntryArchive
 
-from .schema import Simulation, Program, ModelSystem, ModelMethod, ModelData, Outputs
-from .properties import (
+from nomad_ML_smiles_reader.schema import (
+    Simulation,
+    Program,
+    ModelSystem,
+    ModelMethod,
+    Outputs,
+)
+from nomad_ML_smiles_reader.properties import (
     TotalEnergy,
     ElectronicEnergy,
     RepulsiveEnergy,
@@ -37,6 +43,13 @@ from .properties import (
     GapEnergy,
     HeatOfFormation,
     MultipoleMoment,
+    Enthalpy,
+    Entropy,
+    HeatCapacity,
+    ZeroPointEnergy,
+    ElectronicLevels,
+    VibrationalModes,
+    VibrationalSpectrum,
 )
 
 # Defining paths to the file
@@ -88,7 +101,7 @@ simulation = Simulation(
         version='2022',
     ),
     model_method=ModelMethod(
-        methods='Semi-Empirical Molecular Orbital Package - VAMP',
+        name='Semi-Empirical Molecular Orbital Package - VAMP',
     ),
 )
 archive.m_add_sub_section(EntryArchive.data, simulation)
@@ -100,82 +113,110 @@ simulation.model_system.append(model_system)
 model_system.normalize(archive, logger)
 
 # Parsing `Outputs` and the properties inside there
-outputs = Outputs(
-    total_energy=TotalEnergy(value=molecule_data.get('MSVAMP_TotalEnergy') * ureg.eV),
-    electronic_energy=ElectronicEnergy(
-        value=molecule_data.get('MSVAMP_ElectronicEnergy') * ureg.eV
-    ),
-    repulsive_energy=RepulsiveEnergy(
-        value=molecule_data.get('MSVAMP_RepulsiveEnergy') * ureg.eV
-    ),
-    ionization_potential=IonizationPotential(
-        value=molecule_data.get('MSVAMP_IonizationPotential') * ureg.eV
-    ),
-    gap_energy=GapEnergy(
-        value_homo=molecule_data.get('MSVAMP_HOMOEnergy') * ureg.eV,
-        value_lumo=molecule_data.get('MSVAMP_LUMOEnergy') * ureg.eV,
-    ),
-    heat_of_formation=HeatOfFormation(
-        value=molecule_data.get('MSVAMP_HeatOfFormation')
-    ),
-    multipole_moment=MultipoleMoment(
-        value=molecule_data.get('MSVAMP_TotalDipole'),
-        value_dipole=molecule_data.get('MSVAMP_DipoleMoment'),
-        # value_quadrupole=molecule_data.get('MSVAMP_QuadrupoleMoment'),
-        # value_octupole=molecule_data.get('MSVAMP_OctupoleMoment'),
-    ),
+outputs = Outputs()
+# energetics parsing
+energy_map = {
+    'TotalEnergy': 'total_energy',
+    'ElectronicEnergy': 'electronic_energy',
+    'RepulsiveEnergy': 'repulsive_energy',
+    'IonizationPotential': 'ionization_potential',
+    'Enthalpy': 'enthalpy',
+    'Entropy': 'entropy',
+    'ZeroPointEnergy': 'zero_point_energy',
+}
+for label, property in energy_map.items():
+    energy = molecule_data.get(f'MSVAMP_{label}')
+    if energy is not None:
+        setattr(outputs, property, energy * ureg.eV)
+# gap energy parsing
+homo = molecule_data.get('MSVAMP_HOMOEnergy')
+lumo = molecule_data.get('MSVAMP_LUMOEnergy')
+if homo is not None or lumo is not None:
+    gap_energy = GapEnergy()
+    gap_energy.value_homo = homo * ureg.eV if homo is not None else None
+    gap_energy.value_lumo = lumo * ureg.eV if lumo is not None else None
+    gap_energy.extract_gap()  # we extract the diff HOMO - LUMO if is positive
+    outputs.gap_energy = gap_energy
+# heat capacities parsing
+capacity_map = {
+    'HeatOfFormation': 'heat_of_formation',
+    'HeatCapacity': 'heat_capacity',
+}
+for label, property in capacity_map.items():
+    capacity = molecule_data.get(f'MSVAMP_{label}')
+    if capacity is not None:
+        setattr(outputs, property, capacity * ureg('kcal/mol'))
+# multipoles parsing
+total_dipole = molecule_data.get('MSVAMP_TotalDipole')
+if total_dipole is not None:
+    multipole_moment = MultipoleMoment(value=total_dipole * ureg('dimensionless'))
+    multipole_moment.value_dipole = (
+        molecule_data.get('MSVAMP_DipoleMoment') * ureg('dimensionless')
+        if molecule_data.get('MSVAMP_DipoleMoment') is not None
+        else None
+    )
+    # multipole_moment.value_quadrupole = (
+    #     molecule_data.get('MSVAMP_QuadrupoleMoment') * ureg('dimensionless')
+    #     if molecule_data.get('MSVAMP_QuadrupoleMoment') is not None
+    #     else None
+    # )
+    # multipole_moment.value_octupole = (
+    #     molecule_data.get('MSVAMP_OctupoleMoment') * ureg('dimensionless')
+    #     if molecule_data.get('MSVAMP_OctupoleMoment') is not None
+    #     else None
+    # )
+# electronic levels parsing
+electronic_levels = molecule_data.get('MSVAMP_ElectronicLevels')
+if electronic_levels is not None:
+    levels = [level.split() for level in electronic_levels.split('\n')]
+    section = ElectronicLevels(type='UV-VIS', n_levels=len(levels))
+    excited_state = [int(level[0]) for level in levels]
+    value = [float(level[1]) for level in levels]
+    value_wavelength = [float(level[2]) for level in levels]
+    oscillator_strength = [float(level[3]) for level in levels]
+    transition_type = [int(level[-1]) for level in levels]
+    section.excited_state = excited_state
+    section.value = value * ureg('THz')
+    section.value_wavelength = value_wavelength * ureg('nm')
+    section.oscillator_strength = oscillator_strength * ureg('dimensionless')
+    section.transition_type = transition_type
+    outputs.electronic_levels = section
+# vibrational modes parsing
+vibrational_modes = molecule_data.get('MSVAMP_VibrationalMode')
+if vibrational_modes is not None:
+    section = VibrationalModes(
+        n_modes=len(vibrational_modes),
+        value=vibrational_modes,
+        frequency=molecule_data.get('MSVAMP_VibrationalFrequency') * ureg('THz')
+        if molecule_data.get('MSVAMP_VibrationalFrequency') is not None
+        else None,
+        reduced_mass=molecule_data.get('MSVAMP_VibrationalReducedMass')
+        * ureg('dimensionless')
+        if molecule_data.get('MSVAMP_VibrationalReducedMass') is not None
+        else None,
+        raman_intensity=molecule_data.get('MSVAMP_VibrationalRamanIntensity')
+        * ureg('dimensionless')
+        if molecule_data.get('MSVAMP_VibrationalRamanIntensity') is not None
+        else None,
+    )
+    outputs.vibrational_modes = section
+# vibrational spectrum parsing
+vibrational_spectrum_intensities = molecule_data.get(
+    'MSVAMP_VibrationalIntensity_Strength'
 )
-outputs.gap_energy.extract_gap()  # we extract the diff HOMO - LUMO if is positive
+if vibrational_spectrum_intensities is not None:
+    section = VibrationalSpectrum(
+        n_frequencies=len(vibrational_spectrum_intensities),
+        value=vibrational_spectrum_intensities * ureg('dimensionless'),
+        frequency=molecule_data.get('MSVAMP_VibrationalIntensity_Frequency')
+        * ureg('THz'),
+    )
+    outputs.vibrational_spectrum = section
+
+
 simulation.outputs.append(outputs)
 outputs.normalize(archive, logger)
 
-
-# Enthalpy
-data1 = ModelData(enthalpy=data[0].get('MSVAMP_Enthalpy', ''))  #
-simulation.model_system.append(data1)
-archive.m_add_sub_section(EntryArchive.data, simulation)
-# Entropy
-data1 = ModelData(entropy=data[0].get('MSVAMP_Entropy', ''))  #
-simulation.model_system.append(data1)
-archive.m_add_sub_section(EntryArchive.data, simulation)
-# Heat Capacity
-data1 = ModelData(heatcapacity=data[0].get('MSVAMP_HeatCapacity', ''))  #
-simulation.model_system.append(data1)
-archive.m_add_sub_section(EntryArchive.data, simulation)
-# Zero Point Energy
-data1 = ModelData(zeropoint=data[0].get('MSVAMP_ZeroPointEnergy', ''))  #
-simulation.model_system.append(data1)
-archive.m_add_sub_section(EntryArchive.data, simulation)
-
-
-# Vibrational Frequencies
-archive.m_add_sub_section(EntryArchive.data, simulation)
-data1 = ModelData(vibrationalfreq=data[0].get('MSVAMP_VibrationalFrequency'))  #
-simulation.model_system.append(data1)
-# Vibrational Reduced Mass
-archive.m_add_sub_section(EntryArchive.data, simulation)
-data1 = ModelData(vibrationalmass=data[0].get('MSVAMP_VibrationalReducedMass'))  #
-simulation.model_system.append(data1)
-
-# Vibrational Stength Frequency
-archive.m_add_sub_section(EntryArchive.data, simulation)
-data1 = ModelData(
-    vibrationalintensityfreq=data[0].get('MSVAMP_VibrationalIntensity_Frequency')
-)  #
-simulation.model_system.append(data1)
-# Vibrational Strength
-archive.m_add_sub_section(EntryArchive.data, simulation)
-data1 = ModelData(
-    vibrationalintensity=data[0].get('MSVAMP_VibrationalIntensity_Strength')
-)  #
-simulation.model_system.append(data1)
-
-# UV-VIS Data -  Electronic Levels
-archive.m_add_sub_section(EntryArchive.data, simulation)
-data1 = ModelData(
-    electroniclevels=data[0].get('MSVAMP_ElectronicLevels').split('\n')
-)  #
-simulation.model_system.append(data1)
 
 # # Patch
 json_archive = archive.m_to_dict()

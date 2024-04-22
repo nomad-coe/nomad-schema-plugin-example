@@ -148,6 +148,7 @@ class MultipoleMoment(PhysicalProperty):
     value = Quantity(
         type=np.float64,
         shape=[],
+        unit='dimensionless',
         description="""
         Value of the total moment.
         """,
@@ -156,6 +157,7 @@ class MultipoleMoment(PhysicalProperty):
     value_dipole = Quantity(
         type=np.float64,
         shape=[3],
+        unit='dimensionless',
         description="""
         Value of the dipole moment.
         """,
@@ -164,6 +166,7 @@ class MultipoleMoment(PhysicalProperty):
     # value_quadrupole = Quantity(
     #     type=np.float64,
     #     shape=[3, 3],
+    #     unit='dimensionless',
     #     description="""
     #     Value of the dipole moment.
     #     """,
@@ -172,7 +175,200 @@ class MultipoleMoment(PhysicalProperty):
     # value_octupole = Quantity(
     #     type=np.float64,
     #     shape=[3, 3, 3, 3],
+    #     unit='dimensionless',
     #     description="""
     #     Value of the octupole moment.
     #     """,
     # )
+
+
+class Enthalpy(PhysicalProperty):
+    """ """
+
+    value = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='joule',
+        description="""
+        Enthalpy.
+        """,  # FIXME: Add description
+    )
+
+
+class Entropy(PhysicalProperty):
+    """ """
+
+    value = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='joule',
+        description="""
+        Entropy.
+        """,  # FIXME: Add description
+    )
+
+
+class HeatCapacity(PhysicalProperty):
+    """ """
+
+    value = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='kcal/mol',
+        description="""
+        Heat capacity.
+        """,  # FIXME: Add description (which specific heat capacity?)
+    )
+
+
+class ZeroPointEnergy(PhysicalProperty):
+    """ """
+
+    value = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='joule',
+        description="""
+        Zero point energy.
+        """,  # FIXME: Add description
+    )
+
+
+class ElectronicLevels(PhysicalProperty):
+    """ """
+
+    type = Quantity(
+        type=str,
+        shape=[],
+        description="""
+        Type of electronic levels. For example, UV-VIS.
+        """,
+    )
+
+    n_levels = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        Number of electronic levels.
+        """,
+    )
+
+    excited_state = Quantity(
+        type=np.int32,
+        shape=['n_levels'],
+        description="""
+        Excited state integer.
+        """,
+    )
+
+    value = Quantity(
+        type=np.float64,
+        shape=['n_levels'],
+        unit='Hz',
+        description="""
+        Electronic levels values in frequencies.
+        """,
+    )
+
+    value_wavelength = Quantity(
+        type=np.float64,
+        shape=['n_levels'],
+        unit='meter',
+        description="""
+        Electronic levels values in wavelengths.
+        """,
+    )
+
+    oscillator_strength = Quantity(
+        type=np.float64,
+        shape=['n_levels'],
+        unit='dimensionless',
+        description="""
+        Electronic levels oscillator strength.
+        """,
+    )
+
+    transition_type = Quantity(
+        type=np.int32,
+        shape=['n_levels'],
+        description="""
+        Transition type of the electronic level.
+        """,  # TODO add examples of what this means
+    )
+
+
+class VibrationalModes(PhysicalProperty):
+    """ """
+
+    n_modes = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        Number of vibrational modes.
+        """,
+    )
+
+    value = Quantity(
+        type=str,
+        shape=['n_modes'],
+        description="""
+        Vibrational modes values.
+        """,
+    )
+
+    frequency = Quantity(
+        type=np.float64,
+        shape=['n_modes'],
+        unit='Hz',
+        description="""
+        Vibrational modes frequencies.
+        """,
+    )
+
+    reduced_mass = Quantity(
+        type=np.float64,
+        shape=['n_modes'],
+        unit='dimensionless',
+        description="""
+        Vibrational modes reduced masses.
+        """,
+    )
+
+    raman_intensity = Quantity(
+        type=np.float64,
+        shape=['n_modes'],
+        unit='dimensionless',
+        description="""
+        Vibrational modes Raman intensities.
+        """,
+    )
+
+
+class VibrationalSpectrum(PhysicalProperty):
+    """ """
+
+    n_frequencies = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        Number of frequencies.
+        """,
+    )
+
+    frequency = Quantity(
+        type=np.float64,
+        shape=['n_frequencies'],
+        unit='Hz',
+        description="""
+        Vibrational spectrum frequencies.
+        """,
+    )
+
+    value = Quantity(
+        type=np.float64,
+        shape=['n_frequencies'],
+        unit='dimensionless',
+        description="""
+        Vibrational spectrum intensity values.
+        """,
+    )

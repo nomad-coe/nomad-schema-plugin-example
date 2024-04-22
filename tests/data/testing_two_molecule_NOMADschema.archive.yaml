@@ -16,7 +16,7 @@ definitions:
         type_data: str
         type_kind: python
   - base_sections:
-    - nomad.datamodel.metainfo.basesections.Entity
+    - nomad.datamodel.metainfo.basesections.System
     description: A base section used to specify the system information used for simulations.
     name: ModelSystem
     quantities:
@@ -79,10 +79,12 @@ definitions:
     sub_sections:
     - name: program
       sub_section: /definitions/section_definitions/0
-    - name: model_method
-      sub_section: schema.BaseMethod
     - name: model_system
       repeats: true
       sub_section: /definitions/section_definitions/1
-    - name: model_output
-      sub_section: schema.ModelData
+    - name: model_method
+      repeats: false
+      sub_section: nomad_ML_smiles_reader.schema.ModelMethod
+    - name: outputs
+      repeats: true
+      sub_section: nomad_ML_smiles_reader.schema.Outputs

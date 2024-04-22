@@ -17,7 +17,7 @@ authors = [
 license = { text = "Apache-2.0" }
 requires-python = ">=3.9"
 dependencies = [
-    "nomad-lab>=1.2.2dev399",
+    "nomad-lab>=1.2.2dev578",
     "nomad-schema-plugin-run@git+https://github.com/nomad-coe/nomad-schema-plugin-run.git@develop",
     "pyyaml==6.0",
     "chemnlp",

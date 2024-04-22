@@ -20,11 +20,26 @@ import numpy as np
 
 from typing import Optional
 
-from nomad.metainfo import Package, Section, Quantity, SubSection
+from nomad.metainfo import Package, Quantity, SubSection
 from nomad.datamodel.data import ArchiveSection, EntryData
-from nomad.datamodel.metainfo.basesections import System, Activity
+from nomad.datamodel.metainfo.basesections import System, Activity, Entity
 
-from .properties import *
+from nomad_ML_smiles_reader.properties import (
+    TotalEnergy,
+    ElectronicEnergy,
+    RepulsiveEnergy,
+    IonizationPotential,
+    GapEnergy,
+    HeatOfFormation,
+    MultipoleMoment,
+    Enthalpy,
+    Entropy,
+    HeatCapacity,
+    ZeroPointEnergy,
+    ElectronicLevels,
+    VibrationalModes,
+    VibrationalSpectrum,
+)
 
 
 m_package = Package()
@@ -134,170 +149,11 @@ class ModelMethod(ArchiveSection):
     A base section used to specify the method solver information used for simulations.
     """
 
-    method_name = Quantity(
+    name = Quantity(
         type=str,
         description="""
         Details on the simulation method used to generate data, https://www.3ds.com/assets/invest/2023-10/biovia-material-studio-vamp.pdf.
         """,
-    )
-
-
-class ModelData(Entity):
-    """
-    A base section used to specify the system solver information used for simulations.
-    """
-
-    totalenergy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Total energy from semiempirical calculation. This value is dependent on the basis selected and should not be used as an absolute value.
-        """,
-    )
-    electronicenergy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Valance electron energy from semiempirical calculation.""",
-    )
-
-    repulsiveenergy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Repulsive Energy.
-        """,  # FIXME: Add description
-    )
-
-    ionizationpotential = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Ionization Potential.
-        """,  # FIXME: Add description
-    )
-
-    homoenergy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        HOMO Energy.
-        """,  # FIXME: Add description
-    )
-    lumoenergy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        LUMO Energy.
-        """,  # FIXME: Add description
-    )
-    heatofformation = Quantity(
-        type=np.float64,
-        unit='kcal/mol',  # TODO: Check if this is the correct unit
-        description="""
-        Heat of Formation.
-        """,  # FIXME: Add description
-    )
-    totaldipole = Quantity(
-        type=np.float64,
-        unit='',  # TODO: Check if this is the correct unit
-        description="""
-        Total Dipole Moment.
-        """,  # FIXME: Add description
-    )
-    enthalpy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Enthalpy.
-        """,  # FIXME: Add description
-    )
-    entropy = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Entropy.
-        """,  # FIXME: Add description
-    )
-    heatcapacity = Quantity(
-        type=np.float64,
-        unit='kcal/mol',  # TODO: Check if this is the correct unit
-        description="""
-        Heat Capacity.
-        """,  # FIXME: Add description
-    )
-
-    zeropoint = Quantity(
-        type=np.float64,
-        unit='eV',  # TODO: Check if this is the correct unit
-        description="""
-        Zero Points Energy.
-        """,  # FIXME: Add description
-    )
-
-    dipolemoment = Quantity(
-        type=np.float64,
-        shape=[1, 3],
-        description="""
-        Dipole Moment in three directions.
-        """,  # FIXME: Add description
-    )
-
-    qudrupolemoment = Quantity(
-        type=np.float64,
-        shape=[1, 6],
-        description="""
-        Qudrupole Moment.
-        """,  # FIXME: Add description
-    )
-    octupolemoment = Quantity(
-        type=np.float64,
-        shape=[1, 10],
-        description="""
-        Octupole Moment.
-        """,  # FIXME: Add description
-    )
-
-    vibrationalfreq = Quantity(
-        type=np.float64,
-        unit='THz',  # TODO: Check if this is the correct unit
-        shape=[1, '*'],
-        description="""
-        Vibrational Frequencies associated with Reduced Mass.
-        """,  # FIXME: Add description
-    )
-
-    vibrationalmass = Quantity(
-        type=np.float64,
-        shape=[1, '*'],
-        description="""
-        Reduced Mass as a function of Vibrational Frequency
-        """,  # FIXME: Add description
-    )
-
-    vibrationalintensityfreq = Quantity(
-        type=np.float64,
-        unit='THz',  # TODO: Check if this is the correct unit
-        shape=[1, '*'],
-        description="""
-        Frequencies associated with Vibrational Strength.
-        """,  # FIXME: Add description
-    )
-    vibrationalintensity = Quantity(
-        type=np.float64,
-        shape=[1, '*'],
-        description="""
-        Vibrational Strength as a function of Vibrational Frequency.
-        """,  # FIXME: Add description
-    )
-
-    electroniclevels = Quantity(
-        # type={type_kind: uvis, type_data: [int, np.float64, np.float64, np.float64, int]},
-        type=str,
-        # shape=[5,'*'],
-        description="""
-        UV-VIS Data. Columns: Excited State Number, Frequency THz, Wavelength nm, Oscillator Strength, Transition Type.
-        """,  # FIXME: Add description
     )
 
 
@@ -332,6 +188,20 @@ class Outputs(ArchiveSection):
     heat_of_formation = SubSection(sub_section=HeatOfFormation.m_def)
 
     multipole_moment = SubSection(sub_section=MultipoleMoment.m_def)
+
+    enthalpy = SubSection(sub_section=Enthalpy.m_def)
+
+    entropy = SubSection(sub_section=Entropy.m_def)
+
+    heat_capacity = SubSection(sub_section=HeatCapacity.m_def)
+
+    zero_point_energy = SubSection(sub_section=ZeroPointEnergy.m_def)
+
+    electronic_levels = SubSection(sub_section=ElectronicLevels.m_def)
+
+    vibrational_modes = SubSection(sub_section=VibrationalModes.m_def)
+
+    vibrational_spectrum = SubSection(sub_section=VibrationalSpectrum.m_def)
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
