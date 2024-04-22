@@ -16,13 +16,13 @@
 # limitations under the License.
 #
 
-import numpy as np
-
 from typing import Optional
+
+from chemnlp.data.reprs import *
 
 from nomad.metainfo import Package, Quantity, SubSection
 from nomad.datamodel.data import ArchiveSection, EntryData
-from nomad.datamodel.metainfo.basesections import System, Activity, Entity
+from nomad.datamodel.metainfo.basesections import System, Activity
 
 from nomad_ML_smiles_reader.properties import (
     TotalEnergy,
@@ -129,13 +129,12 @@ class ModelSystem(System):
         Resolve the chemical IDs from the SMILES string.
         """
         # We extract information from the SMILES string
-        for label_id in ['selfies', 'deepsmiles', 'canonical', 'inchi']:
-            try:
-                conversion_funct = globals()[f'smiles_to_{label_id}']
-                result = conversion_funct(smiles=self.smiles)
-            except Exception:
-                result = ''
-            setattr(self, f'{label_id}_id', result)
+        if self.smiles is None:
+            return
+        self.selfies = smiles_to_selfies(smiles=self.smiles)
+        self.deepsmiles = smiles_to_deepsmiles(smiles=self.smiles)
+        self.canonical = smiles_to_canoncial(smiles=self.smiles)
+        self.inchi = smiles_to_inchi(smiles=self.smiles)
 
     def normalize(self, archive, logger) -> None:
         super().normalize(archive, logger)

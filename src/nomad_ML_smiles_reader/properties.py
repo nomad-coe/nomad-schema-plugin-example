@@ -18,11 +18,12 @@
 
 import numpy as np
 
-from typing import Optional
-
-from nomad.metainfo import Package, Section, Quantity, SubSection
+from nomad.metainfo import Quantity, Package
 from nomad.metainfo.metainfo import _placeholder_quantity
 from nomad.datamodel.data import ArchiveSection
+
+
+m_package = Package()
 
 
 class PhysicalProperty(ArchiveSection):
@@ -372,3 +373,6 @@ class VibrationalSpectrum(PhysicalProperty):
         Vibrational spectrum intensity values.
         """,
     )
+
+
+m_package.__init_metainfo__()

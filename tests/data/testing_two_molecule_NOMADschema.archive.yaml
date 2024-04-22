@@ -84,7 +84,347 @@ definitions:
       sub_section: /definitions/section_definitions/1
     - name: model_method
       repeats: false
-      sub_section: nomad_ML_smiles_reader.schema.ModelMethod
+      sub_section: /definitions/section_definitions/4
     - name: outputs
       repeats: true
-      sub_section: nomad_ML_smiles_reader.schema.Outputs
+      sub_section: /definitions/section_definitions/3
+  - base_sections:
+    - nomad.datamodel.data.ArchiveSection
+    description: Output properties of a simulation. This base class can be used for
+      inheritance in any of the output properties defined in this schema.
+    name: Outputs
+    quantities:
+    - description: 'Reference to the `ModelSystem` section to which the output property
+        references to and on
+
+        on which the simulation is performed.'
+      name: model_system_ref
+      type:
+        type_data: /definitions/section_definitions/1
+        type_kind: reference
+    sub_sections:
+    - name: total_energy
+      sub_section: /definitions/section_definitions/6
+    - name: electronic_energy
+      sub_section: /definitions/section_definitions/7
+    - name: repulsive_energy
+      sub_section: /definitions/section_definitions/8
+    - name: ionization_potential
+      sub_section: /definitions/section_definitions/9
+    - name: gap_energy
+      sub_section: /definitions/section_definitions/10
+    - name: heat_of_formation
+      sub_section: /definitions/section_definitions/11
+    - name: multipole_moment
+      sub_section: /definitions/section_definitions/12
+    - name: enthalpy
+      sub_section: /definitions/section_definitions/13
+    - name: entropy
+      sub_section: /definitions/section_definitions/14
+    - name: heat_capacity
+      sub_section: /definitions/section_definitions/15
+    - name: zero_point_energy
+      sub_section: /definitions/section_definitions/16
+    - name: electronic_levels
+      sub_section: /definitions/section_definitions/17
+    - name: vibrational_modes
+      sub_section: /definitions/section_definitions/18
+    - name: vibrational_spectrum
+      sub_section: /definitions/section_definitions/19
+  - base_sections:
+    - nomad.datamodel.data.ArchiveSection
+    description: A base section used to specify the method solver information used
+      for simulations.
+    name: ModelMethod
+    quantities:
+    - description: Details on the simulation method used to generate data, https://www.3ds.com/assets/invest/2023-10/biovia-material-studio-vamp.pdf.
+      name: name
+      type:
+        type_data: str
+        type_kind: python
+  - base_sections:
+    - nomad.datamodel.data.ArchiveSection
+    description: 'A base section used to define the physical properties obtained in
+      a simulation, experiment, or in a post-processing analysis. The main quantity
+      of the `PhysicalProperty` is `value`, whose instantiation has to be overwritten
+      in the derived classes
+
+      when inheriting from `PhysicalProperty`. It also contains `rank`, to define
+      the tensor rank of the physical property, and
+
+      `variables`, to define the variables over which the physical property varies
+      (see variables.py). This class can also store several
+
+      string identifiers and quantities for referencing and establishing the character
+      of a physical property.'
+    name: PhysicalProperty
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: TotalEnergy
+    quantities:
+    - description: 'Total energy from semiempirical calculation. This value is dependent
+        on the basis selected
+
+        and should not be used as an absolute value.'
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: ElectronicEnergy
+    quantities:
+    - description: Balance electron energy from semiempirical calculation.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: RepulsiveEnergy
+    quantities:
+    - description: Repulsive Energy.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: IonizationPotential
+    quantities:
+    - description: Ionization Potential.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: GapEnergy
+    quantities:
+    - description: Highest occupied molecular orbital value.
+      name: value_homo
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+    - description: Lowest unoccupied molecular orbital value.
+      name: value_lumo
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+    - description: 'Value of the gap of energies. This is calculated as the difference
+        `value_homo - value_lumo`; if the
+
+        `value` is negative, we don''t set it.'
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: HeatOfFormation
+    quantities:
+    - description: Heat of Formation.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: kilocalorie / mole
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: MultipoleMoment
+    quantities:
+    - description: Value of the total moment.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: dimensionless
+    - description: Value of the dipole moment.
+      name: value_dipole
+      shape:
+      - 3
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: dimensionless
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: Enthalpy
+    quantities:
+    - description: Enthalpy.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: Entropy
+    quantities:
+    - description: Entropy.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: HeatCapacity
+    quantities:
+    - description: Heat capacity.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: kilocalorie / mole
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: ZeroPointEnergy
+    quantities:
+    - description: Zero point energy.
+      name: value
+      shape: []
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: joule
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: ElectronicLevels
+    quantities:
+    - description: Type of electronic levels. For example, UV-VIS.
+      name: type
+      shape: []
+      type:
+        type_data: str
+        type_kind: python
+    - description: Number of electronic levels.
+      name: n_levels
+      shape: []
+      type:
+        type_data: int32
+        type_kind: numpy
+    - description: Excited state integer.
+      name: excited_state
+      shape:
+      - n_levels
+      type:
+        type_data: int32
+        type_kind: numpy
+    - description: Electronic levels values in frequencies.
+      name: value
+      shape:
+      - n_levels
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: hertz
+    - description: Electronic levels values in wavelengths.
+      name: value_wavelength
+      shape:
+      - n_levels
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: meter
+    - description: Electronic levels oscillator strength.
+      name: oscillator_strength
+      shape:
+      - n_levels
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: dimensionless
+    - description: Transition type of the electronic level.
+      name: transition_type
+      shape:
+      - n_levels
+      type:
+        type_data: int32
+        type_kind: numpy
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: VibrationalModes
+    quantities:
+    - description: Number of vibrational modes.
+      name: n_modes
+      shape: []
+      type:
+        type_data: int32
+        type_kind: numpy
+    - description: Vibrational modes values.
+      name: value
+      shape:
+      - n_modes
+      type:
+        type_data: str
+        type_kind: python
+    - description: Vibrational modes frequencies.
+      name: frequency
+      shape:
+      - n_modes
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: hertz
+    - description: Vibrational modes reduced masses.
+      name: reduced_mass
+      shape:
+      - n_modes
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: dimensionless
+    - description: Vibrational modes Raman intensities.
+      name: raman_intensity
+      shape:
+      - n_modes
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: dimensionless
+  - base_sections:
+    - /definitions/section_definitions/5
+    name: VibrationalSpectrum
+    quantities:
+    - description: Number of frequencies.
+      name: n_frequencies
+      shape: []
+      type:
+        type_data: int32
+        type_kind: numpy
+    - description: Vibrational spectrum frequencies.
+      name: frequency
+      shape:
+      - n_frequencies
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: hertz
+    - description: Vibrational spectrum intensity values.
+      name: value
+      shape:
+      - n_frequencies
+      type:
+        type_data: float64
+        type_kind: numpy
+      unit: dimensionless
