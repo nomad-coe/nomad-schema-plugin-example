@@ -53,12 +53,13 @@ from nomad_ML_smiles_reader.properties import (
 
 # Defining paths to the file
 current_dir = os.path.dirname(os.path.abspath(__file__))  # go to directory
-test_file = '../../tests/data/testing_two_molecules.json'  # inputfile - open file to parse - from Pipeline Pilot JSON Writer
+# test_file = '../../tests/data/testing_two_molecules.json'  # inputfile - open file to parse - from Pipeline Pilot JSON Writer
+test_file = '../../tests/data/original_data_smile_strings_48_finish.json'  # inputfile - open file to parse - from Pipeline Pilot JSON Writer
 dirname = os.path.dirname(test_file)  # determine directory from filename
 basename = os.path.basename(test_file).strip(
     '.json'
 )  # determine filename without extension
-nomad_schema_file = f'{dirname}/{basename}_NOMADschema.archive.yaml'  # create new file for nomad yaml file. append "_NOMADschema.archive." and extention ".yaml" to file
+nomad_schema_file = f'{dirname}/original_data_NOMADschema.archive.yaml'  # create new file for nomad yaml file. append "_NOMADschema.archive." and extention ".yaml" to file
 filepath = os.path.normpath(
     os.path.join(current_dir, test_file)
 )  # inputfile - combine absolute path with relative path and then remove redundant separators
@@ -109,12 +110,12 @@ with open(
 data = json.load(codecs.open(filepath, 'r', 'utf-8-sig'))  # inputfilename.json
 for i, molecule_data in enumerate(data):
     # names defined from 01, 02, ..., 48 (different molecules)
-    if i < 10:
+    if i < 9:
         i_string = f'0{i+1}'
     else:
         i_string = str(i + 1)
     # new filename for NOMAD json file
-    nomad_file = f'{dirname}/{basename}_NOMAD_molecule{i_string}.archive.json'  # create a new filename for nomad json file. put in same directory as input file
+    nomad_file = f'{dirname}/original_data_NOMAD_molecule{i_string}.archive.json'  # create a new filename for nomad json file. put in same directory as input file
     nomad_filepath = os.path.normpath(
         os.path.join(current_dir, nomad_file)
     )  # do same as previous command for nomad yaml file

@@ -330,14 +330,14 @@ definitions:
       type:
         type_data: int32
         type_kind: numpy
-    - description: Electronic levels values in frequencies.
+    - description: Electronic levels values.
       name: value
       shape:
       - n_levels
       type:
         type_data: float64
         type_kind: numpy
-      unit: hertz
+      unit: joule
     - description: Electronic levels values in wavelengths.
       name: value_wavelength
       shape:
@@ -354,7 +354,7 @@ definitions:
         type_data: float64
         type_kind: numpy
       unit: dimensionless
-    - description: Transition type of the electronic level.
+    - description: Multiplicity of the level (1=singlet, 3=triplet)
       name: transition_type
       shape:
       - n_levels
@@ -427,4 +427,4 @@ definitions:
       type:
         type_data: float64
         type_kind: numpy
-      unit: dimensionless
+      unit: meter / mole
