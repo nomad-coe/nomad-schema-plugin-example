@@ -205,7 +205,7 @@ for i, molecule_data in enumerate(data):
         oscillator_strength = [float(level[3]) for level in levels]
         transition_type = [int(level[-1]) for level in levels]
         section.excited_state = excited_state
-        section.value = value * ureg('THz')
+        section.value = value * ureg('eV')
         section.value_wavelength = value_wavelength * ureg('nm')
         section.oscillator_strength = oscillator_strength * ureg('dimensionless')
         section.transition_type = transition_type
@@ -236,10 +236,12 @@ for i, molecule_data in enumerate(data):
     if vibrational_spectrum_intensities is not None:
         section = VibrationalSpectrum(
             n_frequencies=len(vibrational_spectrum_intensities),
-            value=vibrational_spectrum_intensities * ureg('dimensionless'),
-            frequency=molecule_data.get('MSVAMP_VibrationalIntensity_Frequency')
-            * ureg('THz'),
+            value=vibrational_spectrum_intensities * ureg('km / mol'),
         )
+        wavenumber = molecule_data.get('MSVAMP_VibrationalIntensity_Frequency') * ureg(
+            '1/cm'
+        )
+        section.frequency = (ureg.speed_of_light * wavenumber).to('Hz')
         outputs.vibrational_spectrum = section
 
     simulation.outputs.append(outputs)

@@ -265,9 +265,9 @@ class ElectronicLevels(PhysicalProperty):
     value = Quantity(
         type=np.float64,
         shape=['n_levels'],
-        unit='Hz',
+        unit='joule',
         description="""
-        Electronic levels values in frequencies.
+        Electronic levels values.
         """,
     )
 
@@ -293,8 +293,8 @@ class ElectronicLevels(PhysicalProperty):
         type=np.int32,
         shape=['n_levels'],
         description="""
-        Transition type of the electronic level.
-        """,  # TODO add examples of what this means
+        Multiplicity of the level (1=singlet, 3=triplet)
+        """,
     )
 
 
@@ -368,7 +368,7 @@ class VibrationalSpectrum(PhysicalProperty):
     value = Quantity(
         type=np.float64,
         shape=['n_frequencies'],
-        unit='dimensionless',
+        unit='meter / mol',
         description="""
         Vibrational spectrum intensity values.
         """,
