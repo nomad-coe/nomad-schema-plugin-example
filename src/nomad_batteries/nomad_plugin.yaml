@@ -1,0 +1,4 @@
+plugin_type: schema
+name: schemas/nomad_batteries
+description: |
+  This is a collection of NOMAD schemas and functionalities for batteries data.

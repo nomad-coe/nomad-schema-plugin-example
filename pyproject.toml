@@ -1,84 +1,69 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "setuptools-scm>=8.0"]
+requires = [
+    "setuptools>=61.0.0",
+    "setuptools-scm>=8.0",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = 'nomad-schema-plugin-example'
-version = '1.0'
-description = 'An example schema plugin for NOMAD.'
+name = 'nomad-batteries'
+dynamic = ["version"]
+description = 'A NOMAD plugin for FAIR schemas and functionalities for batteries data.'
 readme = "README.md"
-authors = [{ name = "The NOMAD Authors" }]
+authors = [
+    { name = "Uday Gajera", email = "gajera.uday.1@gmail.com" },
+    { name = "Jose M. Pizarro", email = "jose.pizarro@physik.hu-berlin.de" },
+]
 license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
 dependencies = [
-    "nomad-lab>=1.2.0"
+    "nomad-lab>=1.2.2dev578",
 ]
 
 [project.urls]
-homepage = "https://github.com/nomad-coe/nomad-schema-example-plugin"
+"Homepage" = "https://github.com/nomad-coe/nomad-batteries"
+"Bug Tracker" = "https://github.com/nomad-coe/nomad-batteries/issues"
+"Documentation" = "https://nomad-coe.github.io/nomad-batteries/"
 
 [project.optional-dependencies]
 dev = [
-    'ruff>=0.2.0',
-    'pytest'
+    'mypy==1.0.1',
+    'pytest',
+    'pytest-timeout',
+    'pytest-cov',
+    'ruff',
+    "structlog==22.3.0",
+    "lxml_html_clean>=0.1.0",
 ]
-    
-[tool.ruff]   
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
+
+[tool.ruff]
+include = ["src/nomad_batteries/*.py", "tests/*.py"]
+lint.select = [
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "PL", # pylint
 ]
+lint.ignore = [
+    "E501", # Line too long ({width} > {limit} characters)
+    "E701", # Multiple statements on one line (colon)
+    "E731", # Do not assign a lambda expression, use a def
+    "E402",  # Module level import not at top of file
+    "PLR0911", # Too many return statements
+    "PLR0912", # Too many branches
+    "PLR0913", # Too many arguments in function definition
+    "PLR0915", # Too many statements
+    "PLR2004", # Magic value used instead of constant
+    "PLW0603", # Using the global statement
+    "PLW2901", # redefined-loop-name
+    "PLR1714", # consider-using-in
+    "PLR5501", # else-if-used
+]
+lint.fixable = ["ALL"]
 
 # Same as Black.
 line-length = 88
 indent-width = 4
 
-# Assume Python 3.9
-target-version = "py39"
-
-[tool.ruff.lint]
-select = [
-    # pycodestyle
-    "E",
-    # Pyflakes
-    "F",
-    # pyupgrade
-    "UP",
-   # isort
-    "I",
-    # pylint 
-    "PL"
-]
-
-ignore = [
-    "F403", # 'from module import *' used; unable to detect undefined names
-]
-    
-fixable = ["ALL"]
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-# this is entirely optional, you can remove this if you wish to
 [tool.ruff.format]
 # use single quotes for strings.
 quote-style = "single"
@@ -92,9 +77,8 @@ skip-magic-trailing-comma = false
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
 
-
 [tool.setuptools.packages.find]
-include = ["nomadschemaexample*"]
+where = ["src"]
 
 [tool.setuptools.package-data]
-nomadschemaexample = ['*/nomad_plugin.yaml']
+nomad_batteries = ["*/nomad_plugin.yaml"]
