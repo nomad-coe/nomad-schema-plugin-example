@@ -1,9 +1,9 @@
-name: Deploy MkDocs Site
+name: deploy-mkdocs
 
 on:
   push:
     branches:
-      - main # Triggers deployment on push to the main branch
+      - develop # Triggers deployment on push to the main branch
 
 jobs:
   deploy:
@@ -25,4 +25,4 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          mkdocs gh-deploy --force --remote-branch gh-pages
+          mkdocs gh-deploy --config-file ../nomad-batteries/mkdocs.yml --force --remote-branch gh-pages

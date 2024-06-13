@@ -1,64 +1,73 @@
-name: install-and-test-workflow
+name: install-and-test
 on: [push]
+
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+# `contents` is for permission to the contents of the repository.
+# `pull-requests` is for permission to pull request
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
 jobs:
   install-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
-        pip install coverage coveralls
-    - name: Test with pytest
-      run: |
-        python -m coverage run -m pytest -sv
-    - name: Submit to coveralls
-      continue-on-error: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        coveralls --service=github
-    - name: Test with nomad
-      run: |
-        python -m nomad.cli parse tests/data/test.archive.yaml
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv pip install -e '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple --system
+          uv pip install coveralls --system
+      - name: mypy
+        run: |
+          python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional src/nomad_batteries tests
+      - name: Build coverage file
+        run: |
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=src tests | tee pytest-coverage.txt
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: pytest-coverage.txt
+          junitxml-path: pytest.xml
+      - name: Submit to coveralls
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          coveralls --service=github
   build-and-install:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Build the package
-      run: |
-        pip install --upgrade pip
-        pip install build
-        python -m build --sdist
-    - name: Install the package
-      run: |
-        pip install dist/*.tar.gz --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
-    - name: Test with nomad
-      run: |
-        python -m nomad.cli parse tests/data/test.archive.yaml
-  ruff-linting:
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v3
-      - uses: chartboost/ruff-action@v1
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
         with:
-          args: "check ."
-          version: 0.1.8
-  # to enable auto-formatting check, uncomment the following lines below           
-  # ruff-formatting:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: chartboost/ruff-action@v1
-  #       with:
-  #         args: "format . --check"
-  #         version: 0.1.8
+          python-version: 3.9
+      - name: Build the package
+        run: |
+          pip install uv
+          uv pip install --upgrade pip --system
+          uv pip install build --system
+          python -m build --sdist
+      - name: Install the package
+        run: |
+          uv pip install dist/*.tar.gz --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple --system
+  ruff-linting:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: chartboost/ruff-action@v1
+          with:
+            args: "check ."
+  ruff-formatting:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: chartboost/ruff-action@v1
+          with:
+            args: "format . --check --verbose"

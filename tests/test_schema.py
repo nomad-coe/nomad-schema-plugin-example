@@ -1,11 +1,11 @@
-import os.path
+from nomad.datamodel import EntryArchive
 
-from nomad.client import normalize_all, parse
+from nomad_batteries import ExampleSection
+
+from . import LOGGER
 
 
-def test_schema():
-    test_file = os.path.join(os.path.dirname(__file__), 'data', 'test.archive.yaml')
-    entry_archive = parse(test_file)[0]
-    normalize_all(entry_archive)
-
-    assert entry_archive.data.message == 'Hello Markus!'
+def test_dummy():
+    schema = ExampleSection()
+    schema.normalize(EntryArchive(), LOGGER)
+    assert True

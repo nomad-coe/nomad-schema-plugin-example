@@ -7,7 +7,7 @@ plugins:
   # loaded. Many build in plugins require more dependencies. Install nomad-lab[parsing]
   # to make all default plugins work.
   include:
-    - 'schemas/example'
+    - 'schemas/nomad_batteries'
   options:
-    schemas/example:
-      python_package: nomadschemaexample
+    schemas/nomad_batteries:
+      python_package: nomad_batteries
