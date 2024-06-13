@@ -6,6 +6,6 @@ from . import LOGGER
 
 
 def test_dummy():
-    schema = ExampleSection()
+    schema = ExampleSection(name='World')
     schema.normalize(EntryArchive(), LOGGER)
-    assert True
+    assert schema.message == 'Hello World!'

@@ -23,6 +23,11 @@ python3.9 -m venv .pyenv
 . .pyenv/bin/activate
 ```
 
+Make sure to have pip upgraded:
+```sh
+pip install --upgrade pip
+```
+
 We recommend installing `uv` for fast pip installation of the packages:
 ```sh
 pip install uv
@@ -31,7 +36,6 @@ pip install uv
 Install the `nomad-lab` package:
 
 ```sh
-pip install --upgrade pip
 uv pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
 ```
 
@@ -52,13 +56,8 @@ where the `-s` and `-v` options toggle the output verbosity.
 Our CI/CD pipeline produces a more comprehensive test report using `coverage` and `coveralls` packages. We suggest you to generate your own coverage reports locally by doing:
 
 ```sh
-pip install coverage coveralls
-python -m pytest --cov=src  tests
-```
-
-You can also run the script to generate a local file `coverage.txt` with the same information by doing:
-```sh
-./scripts/generate_coverage_txt.sh
+uv pip install coverage coveralls
+python -m pytest --cov=src tests
 ```
 
 ## Development
@@ -144,12 +143,3 @@ If using VSCode, you can add the following snippet to your `.vscode/launch.json`
 where `${workspaceFolder}` refers to the project root folder.
 
 The settings configuration file `.vscode/settings.json` performs automatically applies the linting upon saving the file progress.
-
-
-## Main contributors
-| Name | E-mail     | Topics | Github profiles |
-|------|------------|--------|-----------------|
-| Dr. Nathan Daelman | [nathan.daelman@physik.hu-berlin.de](mailto:nathan.daelman@physik.hu-berlin.de) | DFT, Precision | [@ndaelman-hu](https://github.com/ndaelman-hu) |
-| Dr. Bernadette Mohr | [mohrbern@physik.hu-berlin.de](mailto:mohrbern@physik.hu-berlin.de) | MD, FF | [@Bernadette-Mohr](https://github.com/Bernadette-Mohr) |
-| Dr. José M. Pizarro | [jose.pizarro@physik.hu-berlin.de](mailto:jose.pizarro@physik.hu-berlin.de) | GW, DMFT, BSE | [@JosePizarro3](https://github.com/JosePizarro3) |
-| Dr. Joseph F. Rudzinski (**Coordinator**) | [joseph.rudzinski@physik.hu-berlin.de](mailto:joseph.rudzinski@physik.hu-berlin.de) | General | [@JFRudzinski](https://github.com/JFRudzinski) |
